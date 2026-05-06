@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andrea Chen — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #f2c4ce;
+      --peach:   #fddbb4;
+      --mint:    #c3e8d0;
+      --sky:     #c5dff8;
+      --lavender:#dcd3f5;
+      --cream:   #fdf8f2;
+      --text:    #3a2e2e;
+      --muted:   #8a7a7a;
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(253, 248, 242, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(242, 196, 206, 0.3);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.5;
+    }
+
+    .blob-1 { width: 500px; height: 500px; background: var(--rose);    top: -100px; right: -100px; animation: drift 8s ease-in-out infinite alternate; }
+    .blob-2 { width: 400px; height: 400px; background: var(--sky);     bottom: -80px; left: -80px; animation: drift 10s ease-in-out infinite alternate-reverse; }
+    .blob-3 { width: 300px; height: 300px; background: var(--mint);    top: 40%; left: 40%; animation: drift 7s ease-in-out infinite alternate; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(242, 196, 206, 0.4);
+      border: 1px solid var(--rose);
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.1;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.4s forwards;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.8rem;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid rgba(58, 46, 46, 0.25);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.6s 1.2s forwards;
+      z-index: 1;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(58,46,46,0.15), transparent);
+      max-width: 200px;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--white);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .about-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .pill {
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .pill-rose     { background: rgba(242,196,206,0.4); color: #b05870; border: 1px solid var(--rose); }
+    .pill-mint     { background: rgba(195,232,208,0.4); color: #3a7a55; border: 1px solid var(--mint); }
+    .pill-sky      { background: rgba(197,223,248,0.4); color: #2a6096; border: 1px solid var(--sky);  }
+    .pill-lavender { background: rgba(220,211,245,0.4); color: #6b55b0; border: 1px solid var(--lavender); }
+    .pill-peach    { background: rgba(253,219,180,0.4); color: #9a6030; border: 1px solid var(--peach); }
+
+    .about-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border: 1px solid rgba(58,46,46,0.07);
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover { transform: translateX(6px); }
+
+    .stat-icon {
+      font-size: 1.8rem;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+    }
+
+    .stat-icon.rose     { background: rgba(242,196,206,0.5); }
+    .stat-icon.mint     { background: rgba(195,232,208,0.5); }
+    .stat-icon.sky      { background: rgba(197,223,248,0.5); }
+    .stat-icon.lavender { background: rgba(220,211,245,0.5); }
+
+    .stat-info strong {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .stat-info span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── SKILLS ── */
+    #skills { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(58,46,46,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .skill-group:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.07);
+    }
+
+    .skill-group-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-group-icon {
+      font-size: 1.3rem;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+    }
+
+    .skill-group h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background: var(--cream);
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      border: 1px solid rgba(58,46,46,0.1);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--white);
+    }
+
+    .experience-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid rgba(58,46,46,0.08);
+      position: relative;
+    }
+
+    .exp-item:last-child { border-bottom: none; }
+
+    .exp-date {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      padding-top: 0.2rem;
+      line-height: 1.6;
+    }
+
+    .exp-role {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .exp-company {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .exp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rose);
+      display: inline-block;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .exp-bullets li {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.6;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .exp-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--rose);
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid rgba(58,46,46,0.07);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.09);
+    }
+
+    .project-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .project-emoji {
+      font-size: 2rem;
+      width: 56px; height: 56px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 16px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .project-link {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border: 1px solid rgba(58,46,46,0.1);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .project-link:hover {
+      background: var(--text);
+      color: var(--white);
+    }
+
+    .project-title {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tech-tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--text);
+      color: var(--cream);
+      text-align: center;
+    }
+
+    #contact .section-label { color: rgba(253,248,242,0.4); }
+    #contact .section-label::after { background: linear-gradient(to right, rgba(253,248,242,0.15), transparent); }
+
+    #contact .section-title {
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .contact-sub {
+      color: rgba(253,248,242,0.55);
+      font-size: 1rem;
+      max-width: 440px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .contact-link:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+    .contact-link.email    { background: var(--rose);    color: var(--text); }
+    .contact-link.github   { background: rgba(255,255,255,0.1); color: var(--cream); border: 1px solid rgba(255,255,255,0.2); }
+    .contact-link.linkedin { background: var(--sky);     color: var(--text); }
+
+    footer {
+      background: var(--text);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+      padding: 1.5rem;
+      color: rgba(253,248,242,0.3);
+      font-size: 0.78rem;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 6rem 1.5rem 4rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .exp-date { padding-top: 0; }
+      #skills, #projects { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">andrea chen</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">✦ Available for new roles</div>
+      <h1>Hi, I'm <em>Andrea</em> —<br>Software Engineer</h1>
+      <p class="hero-desc">
+        Backend &amp; systems engineer with a love for building things that actually work.
+        C/C++, Python, distributed systems, and the occasional iOS app made just for myself.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="mailto:yiwenandrea@gmail.com" class="btn btn-outline">Say Hello ✉︎</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">01 — About</div>
+        <h2 class="section-title">Builder at heart,<br><em style="font-family:Lora,serif;font-style:italic;color:var(--muted)">tinkerer by nature</em></h2>
+        <p style="margin-top:1.5rem">
+          I'm <strong>Yi-Wen (Andrea) Chen</strong>, a software engineer based in Taichung, Taiwan.
+          I graduated from UC Santa Cruz with a degree in Network and Digital Technology, where I fell in love with systems programming and networking.
+        </p>
+        <p>
+          Currently at <strong>ALATECH Technology</strong>, where I work across backend API design, frontend debugging, and platform validation. I like understanding <em>why</em> things break, not just patching them.
+        </p>
+        <p>
+          Outside of work I'm grinding LeetCode, exploring iOS development with SwiftUI, and building tools for myself because the best projects are the ones you actually use.
+        </p>
+        <div class="about-pills">
+          <span class="pill pill-rose">UC Santa Cruz</span>
+          <span class="pill pill-mint">Dean's Honors List</span>
+          <span class="pill pill-sky">Taichung, Taiwan</span>
+          <span class="pill pill-lavender">ACM Member</span>
+          <span class="pill pill-peach">Open to work</span>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="stat-card">
+          <div class="stat-icon rose">🎓</div>
+          <div class="stat-info">
+            <strong>UC Santa Cruz</strong>
+            <span>B.A. Network &amp; Digital Technology, 2025</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon mint">💼</div>
+          <div class="stat-info">
+            <strong>ALATECH Technology</strong>
+            <span>Software Engineer · 2024–Present</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon sky">🔧</div>
+          <div class="stat-info">
+            <strong>Systems & Backend Focus</strong>
+            <span>C/C++, Python, Networking, Docker</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon lavender">📱</div>
+          <div class="stat-info">
+            <strong>iOS Side Projects</strong>
+            <span>SwiftUI · building tools for myself</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label reveal">02 — Skills</div>
+    <h2 class="section-title reveal">What I work with</h2>
+    <div class="skills-grid" style="margin-top:2.5rem">
+      <div class="skill-group reveal">
+        <div class="skill-group-header">
+          <div class="skill-group-icon rose" style="background:rgba(242,196,206,0.4)">⚙️</div>
+          <h3>Languages</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">Swift</span>
+          <span class="skill-tag">Shell</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header">
+          <div class="skill-group-icon" style="background:rgba(197,223,248,0.4)">🌐</div>
+          <h3>Networking</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">TCP/IP</span>
+          <span class="skill-tag">UDP</span>
+          <span class="skill-tag">Sockets</span>
+          <span class="skill-tag">MQTT</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Wireshark</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header">
+          <div class="skill-group-icon" style="background:rgba(195,232,208,0.4)">🖥️</div>
+          <h3>Systems</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Linux/Unix</span>
+          <span class="skill-tag">Multithreading</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">GDB</span>
+          <span class="skill-tag">OS Fundamentals</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header">
+          <div class="skill-group-icon" style="background:rgba(220,211,245,0.4)">🗄️</div>
+          <h3>Databases & Tools</h3>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">JSON Schema</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Angular</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="experience-inner">
+      <div class="section-label reveal">03 — Experience</div>
+      <h2 class="section-title reveal">Where I've worked</h2>
+
+      <div class="exp-item reveal" style="margin-top:2.5rem">
+        <div class="exp-date">Jul 2024<br>Present</div>
+        <div>
+          <div class="exp-role">Software Engineer</div>
+          <div class="exp-company"><span class="exp-dot"></span> ALATECH Technology Limited · Taichung, Taiwan</div>
+          <ul class="exp-bullets">
+            <li>Designed and validated YAML/JSON API specifications, improving backend-frontend integration and reducing cross-platform inconsistencies.</li>
+            <li>Enhanced React/Angular systems by debugging API responses and improving data synchronization.</li>
+            <li>Performed multi-platform validation across two mobile apps and a web platform, ensuring data flow and analytics accuracy.</li>
+            <li>Standardized the company's JSON translation schema, improving internationalization workflows.</li>
+            <li>Led a company-wide security investigation, identifying malware and strengthening compliance processes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">Jun 2024<br>Aug 2024</div>
+        <div>
+          <div class="exp-role">Software Engineering Intern</div>
+          <div class="exp-company"><span class="exp-dot"></span> ALATECH Technology Limited · Taichung, Taiwan</div>
+          <ul class="exp-bullets">
+            <li>Researched feasibility of replacing PoE broadcasting with an MQTT-based system, analyzing throughput and latency trade-offs.</li>
+            <li>Tested firmware and embedded controllers in workout environments, validating real-time data collection accuracy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label reveal">04 — Projects</div>
+    <h2 class="section-title reveal">Things I've built</h2>
+    <div class="projects-grid" style="margin-top:2.5rem">
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-emoji" style="background:rgba(242,196,206,0.4)">📱</div>
+          <div class="project-links">
+            <a href="https://github.com/bruhitsyandrea/LifeTracker" target="_blank" class="project-link" title="GitHub">⌥</a>
+          </div>
+        </div>
+        <div class="project-title">LifeTracker</div>
+        <p class="project-desc">A personal iOS productivity app to track daily habits, job applications, to-dos, and LeetCode solutions — all in one place. Built for myself because nothing else fit.</p>
+        <div class="project-tech">
+          <span class="tech-tag pill-rose">Swift</span>
+          <span class="tech-tag pill-lavender">SwiftUI</span>
+          <span class="tech-tag pill-mint">MVVM</span>
+          <span class="tech-tag pill-sky">UserDefaults</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-emoji" style="background:rgba(197,223,248,0.4)">🌐</div>
+          <div class="project-links">
+            <a href="https://github.com/bruhitsyandrea" target="_blank" class="project-link" title="GitHub">⌥</a>
+          </div>
+        </div>
+        <div class="project-title">Reliable UDP File Transfer</div>
+        <p class="project-desc">Custom UDP-based file transfer protocol with packet sequencing, retransmission, and timeout handling. Implemented a sliding window protocol achieving 85% efficiency under 5% packet loss.</p>
+        <div class="project-tech">
+          <span class="tech-tag pill-sky">C</span>
+          <span class="tech-tag pill-mint">UDP/TCP</span>
+          <span class="tech-tag pill-peach">Network Programming</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-emoji" style="background:rgba(195,232,208,0.4)">⚡</div>
+          <div class="project-links">
+            <a href="https://github.com/bruhitsyandrea" target="_blank" class="project-link" title="GitHub">⌥</a>
+          </div>
+        </div>
+        <div class="project-title">Cache System Implementation</div>
+        <p class="project-desc">High-performance in-memory cache simulator with LRU, FIFO, and Clock replacement policies. Benchmarked under varied workloads to validate OS-level cache behavior.</p>
+        <div class="project-tech">
+          <span class="tech-tag pill-sky">C</span>
+          <span class="tech-tag pill-lavender">Systems Design</span>
+          <span class="tech-tag pill-mint">OS Fundamentals</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-emoji" style="background:rgba(220,211,245,0.4)">🗂️</div>
+          <div class="project-links">
+            <a href="https://github.com/bruhitsyandrea" target="_blank" class="project-link" title="GitHub">⌥</a>
+          </div>
+        </div>
+        <div class="project-title">Distributed Key-Value Store</div>
+        <p class="project-desc">Distributed key-value store with replication and fault tolerance across multiple nodes. Validated concurrency, replication, and crash recovery for high reliability.</p>
+        <div class="project-tech">
+          <span class="tech-tag pill-peach">Python</span>
+          <span class="tech-tag pill-lavender">Distributed Systems</span>
+          <span class="tech-tag pill-rose">Fault Tolerance</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label" style="justify-content:center">05 — Contact</div>
+    <h2 class="section-title reveal">Let's work together</h2>
+    <p class="contact-sub reveal">I'm actively looking for new opportunities. Whether it's a full-time role, a cool project, or just a chat — my inbox is open.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:yiwenandrea@gmail.com" class="contact-link email">✉︎ yiwenandrea@gmail.com</a>
+      <a href="https://github.com/bruhitsyandrea" target="_blank" class="contact-link github">⌥ GitHub</a>
+      <a href="https://linkedin.com/in/yi-wen-chen-85694728b" target="_blank" class="contact-link linkedin">in LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built by Andrea Chen · © 2026</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
