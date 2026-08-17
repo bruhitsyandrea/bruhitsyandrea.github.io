@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reliable UDP — Andrea Chen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../../index.html">andrea chen</a>
+
+    <ul class="nav-links">
+      <li><a href="../../index.html#about">About</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#projects">Projects</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+
+      <a href="../../index.html#projects" class="back-link">
+        ← All Projects
+      </a>
+
+      <div class="project-status completed-status">
+        ✓ Completed
+      </div>
+
+      <h1>
+        Reliable File Transfer<br>
+        <em>over UDP</em>
+      </h1>
+
+      <p class="hero-desc">
+        Building ordering and reliability on top of an unreliable
+        transport protocol using sliding windows, acknowledgments,
+        timeouts, and retransmissions.
+      </p>
+
+      <div class="project-tech">
+        <span class="tech-tag pill-rose">C</span>
+        <span class="tech-tag pill-mint">UDP</span>
+        <span class="tech-tag pill-sky">Sockets</span>
+        <span class="tech-tag pill-lavender">Sliding Window</span>
+        <span class="tech-tag pill-peach">Linux</span>
+      </div>
+
+    </section>
+
+
+    <!-- THE PROBLEM -->
+    <section class="udp-section">
+
+      <div class="section-label">THE PROBLEM</div>
+
+      <h2 class="section-title">
+        UDP doesn't promise<br>
+        <em>your packets will arrive.</em>
+      </h2>
+
+      <p class="udp-intro">
+        The goal was to transfer a file between a client and server
+        using UDP while still guaranteeing that the reconstructed file
+        was identical to the original.
+      </p>
+
+      <div class="problem-grid">
+
+        <div class="problem-card">
+          <span class="problem-icon">✕</span>
+          <h3>Packet Loss</h3>
+          <p>
+            DATA packets and acknowledgments can disappear during
+            transmission.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <span class="problem-icon">↕</span>
+          <h3>Reordering</h3>
+          <p>
+            Packets may reach the server in a different order than
+            they were sent.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <span class="problem-icon">◷</span>
+          <h3>No Reliability</h3>
+          <p>
+            Unlike TCP, UDP doesn't automatically retransmit missing
+            data or track acknowledgments.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="design-goal">
+        <span>DESIGN GOAL</span>
+
+        <p>
+          Build reliability ourselves while still allowing multiple
+          packets to remain in flight at once.
+        </p>
+      </div>
+
+    </section>
+    <!-- HOW IT WORKS -->
+    <section class="udp-section protocol-section">
+
+      <div class="section-label">HOW IT WORKS</div>
+
+      <h2 class="section-title">
+        Making UDP<br>
+        <em>reliable.</em>
+      </h2>
+
+      <p class="udp-intro">
+        Instead of waiting for every packet individually, the client keeps
+        multiple packets in flight using a sliding window. Sequence numbers,
+        acknowledgments, timeouts, and retransmissions provide the reliability
+        that UDP does not provide by itself.
+      </p>
+
+
+    <!-- PROTOCOL FLOW -->
+    <div class="packet-demo">
+
+      <div class="packet-side">
+        <span class="packet-side-label">CLIENT</span>
+      </div>
+
+      <div class="packet-network">
+        <span>UNRELIABLE NETWORK</span>
+      </div>
+
+      <div class="packet-side right">
+        <span class="packet-side-label">SERVER</span>
+      </div>
+
+
+      <!-- Packet 0 -->
+      <div class="packet-row">
+        <div class="packet-name">DATA 0</div>
+
+        <div class="packet-line success">
+          <span class="packet-arrow">→</span>
+        </div>
+
+        <div class="packet-result">received</div>
+      </div>
+
+
+      <!-- Packet 1 dropped -->
+      <div class="packet-row">
+        <div class="packet-name">DATA 1</div>
+
+        <div class="packet-line dropped">
+          <span class="drop-mark">✕ dropped</span>
+        </div>
+
+        <div class="packet-result muted">—</div>
+      </div>
+
+
+      <!-- Packet 2 -->
+      <div class="packet-row">
+        <div class="packet-name">DATA 2</div>
+
+        <div class="packet-line success">
+          <span class="packet-arrow">→</span>
+        </div>
+
+        <div class="packet-result">buffered</div>
+      </div>
+
+
+      <!-- Packet 3 -->
+      <div class="packet-row">
+        <div class="packet-name">DATA 3</div>
+
+        <div class="packet-line success">
+          <span class="packet-arrow">→</span>
+        </div>
+
+        <div class="packet-result">buffered</div>
+      </div>
+
+
+      <div class="timeout-row">
+        <span>◷ timeout — packet loss detected</span>
+      </div>
+
+
+      <!-- Retransmission -->
+      <div class="packet-row retransmit">
+        <div class="packet-name">
+          DATA 1
+          <small>RETRANSMIT</small>
+        </div>
+
+        <div class="packet-line success">
+          <span class="packet-arrow">→</span>
+        </div>
+
+        <div class="packet-result">received ✓</div>
+      </div>
+
+    </div>
+
+
+    <!-- STEPS -->
+    <div class="protocol-steps">
+
+      <div class="protocol-step">
+        <span>01</span>
+        <h3>Split</h3>
+        <p>
+          The client divides the input file into packets no larger
+          than the configured MSS.
+        </p>
+      </div>
+
+      <div class="protocol-step">
+        <span>02</span>
+        <h3>Send</h3>
+        <p>
+          A sliding window allows multiple DATA packets to remain
+          in flight without waiting for every ACK.
+        </p>
+      </div>
+
+      <div class="protocol-step">
+        <span>03</span>
+        <h3>Detect</h3>
+        <p>
+          Sequence numbers and acknowledgments reveal which packets
+          successfully reached the server.
+        </p>
+      </div>
+
+      <div class="protocol-step">
+        <span>04</span>
+        <h3>Recover</h3>
+        <p>
+          Missing packets are retransmitted while out-of-order
+          packets remain buffered for later reassembly.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+  <!-- SLIDING WINDOW -->
+    <section class="udp-section">
+
+      <div class="section-label">SLIDING WINDOW</div>
+
+      <h2 class="section-title">
+        Send first.<br>
+        <em>Wait less.</em>
+      </h2>
+
+      <p class="udp-intro">
+        Instead of sending one packet and waiting for its acknowledgment,
+        the client keeps a window of packets in flight. As packets are
+        acknowledged, the base of the window moves forward and new packets
+        can be transmitted.
+      </p>
+
+      <!-- WINDOW VISUALIZATION -->
+      <div class="window-demo">
+
+        <div class="window-label-row">
+          <span>base</span>
+          <span>active window</span>
+          <span>next</span>
+        </div>
+
+        <div class="window-packets">
+
+          <div class="window-packet acked">
+            <span>0</span>
+            <small>ACK ✓</small>
+          </div>
+
+          <div class="window-packet acked">
+            <span>1</span>
+            <small>ACK ✓</small>
+          </div>
+
+          <div class="window-packet active">
+            <span>2</span>
+            <small>SENT</small>
+          </div>
+
+          <div class="window-packet active">
+            <span>3</span>
+            <small>SENT</small>
+          </div>
+
+          <div class="window-packet active">
+            <span>4</span>
+            <small>SENT</small>
+          </div>
+
+          <div class="window-packet waiting">
+            <span>5</span>
+            <small>WAIT</small>
+          </div>
+
+          <div class="window-packet waiting">
+            <span>6</span>
+            <small>WAIT</small>
+          </div>
+
+        </div>
+
+        <div class="window-legend">
+
+          <span>
+            <i class="legend-dot acked-dot"></i>
+            acknowledged
+          </span>
+
+          <span>
+            <i class="legend-dot active-dot"></i>
+            in flight
+          </span>
+
+          <span>
+            <i class="legend-dot waiting-dot"></i>
+            waiting
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- WHY -->
+      <div class="window-explanation">
+
+        <div>
+          <span class="mini-label">WHY A WINDOW?</span>
+
+          <h3>
+            Reliability without sacrificing throughput.
+          </h3>
+        </div>
+
+        <p>
+          Stop-and-Wait leaves the network idle while the sender waits for
+          every acknowledgment. A sliding window allows several packets to
+          travel simultaneously while still tracking which data has been
+          successfully delivered.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- PACKET LOSS & RECOVERY -->
+    <section class="udp-section">
+
+      <div class="section-label">PACKET LOSS & RECOVERY</div>
+
+      <h2 class="section-title">
+        When packets disappear,<br>
+        <em>try again.</em>
+      </h2>
+
+      <p class="udp-intro">
+        Reliability requires detecting when transmitted data has not been
+        acknowledged and recovering without corrupting the final file.
+      </p>
+
+
+      <div class="recovery-flow">
+
+        <div class="recovery-step">
+          <div class="recovery-icon">01</div>
+          <div>
+            <span class="mini-label">SEND</span>
+            <h3>Transmit DATA packet</h3>
+            <p>
+              The client sends a packet with its sequence number and
+              tracks it as part of the active window.
+            </p>
+          </div>
+        </div>
+
+        <div class="recovery-arrow">↓</div>
+
+
+        <div class="recovery-step loss-step">
+          <div class="recovery-icon">✕</div>
+          <div>
+            <span class="mini-label">LOSS</span>
+            <h3>No acknowledgment arrives</h3>
+            <p>
+              If the expected acknowledgment does not arrive, the client
+              detects that the packet may have been lost.
+            </p>
+          </div>
+        </div>
+
+        <div class="recovery-arrow">↓</div>
+
+
+        <div class="recovery-step">
+          <div class="recovery-icon">02</div>
+          <div>
+            <span class="mini-label">RETRY</span>
+            <h3>Retransmit missing data</h3>
+            <p>
+              The unacknowledged packet is transmitted again rather than
+              restarting the entire file transfer.
+            </p>
+          </div>
+        </div>
+
+        <div class="recovery-arrow">↓</div>
+
+
+        <div class="recovery-step success-step">
+          <div class="recovery-icon">✓</div>
+          <div>
+            <span class="mini-label">RECOVER</span>
+            <h3>ACK received</h3>
+            <p>
+              Once delivery is acknowledged, the sender can continue
+              advancing the transfer window.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- SAFETY / FAILURE BEHAVIOR -->
+
+      <div class="reliability-grid">
+
+        <div class="reliability-card">
+          <span>↻</span>
+          <h3>Bounded Retries</h3>
+          <p>
+            Retransmissions are limited so the client does not retry
+            indefinitely when communication cannot recover.
+          </p>
+        </div>
+
+        <div class="reliability-card">
+          <span>◷</span>
+          <h3>Socket Timeouts</h3>
+          <p>
+            The client avoids blocking forever while waiting for network
+            activity and can detect an unreachable server.
+          </p>
+        </div>
+
+        <div class="reliability-card">
+          <span>✓</span>
+          <h3>File Integrity</h3>
+          <p>
+            Successful completion requires the server to reconstruct the
+            transferred bytes in their original order.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SERVER REASSEMBLY -->
+    <section class="udp-section">
+
+      <div class="section-label">SERVER REASSEMBLY</div>
+
+      <h2 class="section-title">
+        Arrive out of order.<br>
+        <em>Write in order.</em>
+      </h2>
+
+      <p class="udp-intro">
+        UDP packets may arrive in any order. The server tracks sequence
+        numbers and buffers packets that arrive early until the missing
+        data becomes available.
+      </p>
+
+
+      <!-- REASSEMBLY VISUAL -->
+      <div class="reassembly-demo">
+
+        <div class="reassembly-stage">
+          <span class="mini-label">ARRIVAL ORDER</span>
+
+          <div class="reassembly-packets">
+            <div class="reassembly-packet ready">0</div>
+            <div class="reassembly-packet missing">1</div>
+            <div class="reassembly-packet buffered">2</div>
+            <div class="reassembly-packet buffered">3</div>
+          </div>
+
+          <div class="reassembly-caption">
+            Packet 1 is missing — packets 2 and 3 arrive early.
+          </div>
+        </div>
+
+
+        <div class="reassembly-arrow">↓</div>
+
+
+        <div class="buffer-box">
+
+          <span class="mini-label">SERVER BUFFER</span>
+
+          <div class="buffer-content">
+            <div>
+              <span>2</span>
+              <small>waiting</small>
+            </div>
+
+            <div>
+              <span>3</span>
+              <small>waiting</small>
+            </div>
+          </div>
+
+          <p>
+            Out-of-order packets are preserved instead of discarded.
+          </p>
+
+        </div>
+
+
+        <div class="reassembly-arrow">↓</div>
+
+
+        <div class="late-packet">
+          <span>DATA 1</span>
+          <div class="late-line">────────→</div>
+          <strong>finally arrives ✓</strong>
+        </div>
+
+
+        <div class="reassembly-arrow">↓</div>
+
+
+        <div class="final-file">
+
+          <span class="mini-label">FINAL FILE</span>
+
+          <div class="final-file-packets">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+          </div>
+
+          <p>
+            Packets are written in sequence order so the reconstructed
+            file matches the original byte-for-byte.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- SERVER RESPONSIBILITIES -->
+      <div class="server-grid">
+
+        <div class="server-card">
+          <span>01</span>
+          <h3>Track</h3>
+          <p>
+            Sequence numbers identify where each packet belongs in
+            the original file.
+          </p>
+        </div>
+
+        <div class="server-card">
+          <span>02</span>
+          <h3>Buffer</h3>
+          <p>
+            Packets that arrive ahead of missing data are temporarily
+            stored instead of being written incorrectly.
+          </p>
+        </div>
+
+        <div class="server-card">
+          <span>03</span>
+          <h3>Acknowledge</h3>
+          <p>
+            ACKs tell the client which packets successfully reached
+            the server.
+          </p>
+        </div>
+
+        <div class="server-card">
+          <span>04</span>
+          <h3>Reassemble</h3>
+          <p>
+            Once the required sequence is available, buffered data can
+            be written in the correct order.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TESTING -->
+    <section class="udp-section">
+
+      <div class="section-label">TESTING & VALIDATION</div>
+
+      <h2 class="section-title">
+        Reliability means<br>
+        <em>testing failure.</em>
+      </h2>
+
+      <p class="udp-intro">
+        The protocol was tested under packet loss, reordering, different
+        file sizes, and server failures to verify that successful transfers
+        still reconstructed the original file correctly.
+      </p>
+
+      <div class="test-grid">
+
+        <div class="test-card">
+          <span class="test-status">✓</span>
+          <div>
+            <h3>Packet Loss</h3>
+            <p>
+              Simulated dropped DATA and ACK packets to verify
+              loss detection and retransmission.
+            </p>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <span class="test-status">✓</span>
+          <div>
+            <h3>Out-of-Order Delivery</h3>
+            <p>
+              Verified that packets arriving out of sequence were
+              buffered and reconstructed in the correct order.
+            </p>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <span class="test-status">✓</span>
+          <div>
+            <h3>Large File Transfer</h3>
+            <p>
+              Tested file transfers spanning many packets while
+              packet loss was enabled.
+            </p>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <span class="test-status">✓</span>
+          <div>
+            <h3>Failure Handling</h3>
+            <p>
+              Handled unreachable servers, socket errors, timeouts,
+              and retransmission limits without hanging indefinitely.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="result-highlight">
+
+        <div class="result-number">UDP</div>
+
+        <div>
+          <span class="mini-label">CORE RESULT</span>
+
+          <h3>Unreliable transport → reliable file transfer.</h3>
+
+          <p>
+            A transfer is considered successful only when the server
+            reconstructs the file correctly and the client receives
+            acknowledgment of the complete transfer.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- WHAT I LEARNED -->
+    <section class="udp-section">
+
+      <div class="section-label">WHAT I LEARNED</div>
+
+      <h2 class="section-title">
+        Reliability isn't magic.<br>
+        <em>Someone has to build it.</em>
+      </h2>
+
+      <p class="udp-intro">
+        Building reliable transfer over UDP helped me understand what
+        transport protocols are actually doing underneath the abstractions
+        applications normally rely on.
+      </p>
+
+      <div class="learning-grid">
+
+        <div class="learning-card">
+          <span>01</span>
+          <h3>Protocol Design</h3>
+          <p>
+            I learned how sequence numbers, acknowledgments, sliding windows,
+            and retransmissions work together to create reliable communication.
+          </p>
+        </div>
+
+        <div class="learning-card">
+          <span>02</span>
+          <h3>Failure Is Normal</h3>
+          <p>
+            Network software has to assume packets can disappear, arrive late,
+            arrive out of order, or never receive a response.
+          </p>
+        </div>
+
+        <div class="learning-card">
+          <span>03</span>
+          <h3>State Matters</h3>
+          <p>
+            Both client and server must carefully track packet state so that
+            retries and out-of-order delivery do not corrupt the final file.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- SOURCE -->
+      <div class="project-source">
+
+        <div>
+          <span class="mini-label">SOURCE CODE</span>
+          <h3>Want to see how it works?</h3>
+          <p>
+            The complete client and server implementation is available
+            on GitHub.
+          </p>
+        </div>
+
+        <a
+          href="https://github.com/bruhitsyandrea/network-programming-class/tree/main/lab3"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          View on GitHub ↗
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

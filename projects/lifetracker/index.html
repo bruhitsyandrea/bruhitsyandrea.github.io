@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LifeTracker — Andrea Chen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../../index.html">andrea chen</a>
+
+    <ul class="nav-links">
+      <li><a href="../../index.html#about">About</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#projects">Projects</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+
+      <a href="../../index.html#projects" class="back-link">
+        ← All Projects
+      </a>
+
+      <div class="project-status completed-status">
+        ✓ Personal Project
+      </div>
+
+      <h1>
+        Life<em>Tracker</em>
+      </h1>
+
+      <p class="hero-desc">
+        A personal iOS productivity app that brings habits,
+        job applications, to-dos, and LeetCode progress into
+        one place — built because the tools I was using didn't
+        fit the workflow I wanted.
+      </p>
+
+      <div class="project-tech">
+        <span class="tech-tag pill-rose">Swift</span>
+        <span class="tech-tag pill-lavender">SwiftUI</span>
+        <span class="tech-tag pill-mint">MVVM</span>
+        <span class="tech-tag pill-sky">UserDefaults</span>
+      </div>
+
+    </section>
+
+
+    <!-- WHY I BUILT IT -->
+    <section class="life-section">
+
+      <div class="section-label">THE IDEA</div>
+
+      <h2 class="section-title">
+        Too many trackers.<br>
+        <em>Not enough tracking.</em>
+      </h2>
+
+      <p class="life-intro">
+        My productivity information was spread across different
+        workflows. Habits lived in one place, tasks in another,
+        while job applications and coding practice required their
+        own tracking systems.
+      </p>
+
+
+      <div class="life-problem">
+
+        <div class="life-chaos">
+
+          <span class="mini-label">BEFORE</span>
+
+          <div class="chaos-items">
+            <span>Habits</span>
+            <span>Job Applications</span>
+            <span>To-Dos</span>
+            <span>LeetCode</span>
+          </div>
+
+        </div>
+
+
+        <div class="life-problem-arrow">
+          →
+        </div>
+
+
+        <div class="life-solution">
+
+          <span class="mini-label">MY SOLUTION</span>
+
+          <div class="life-app-icon">
+            📱
+          </div>
+
+          <h3>LifeTracker</h3>
+
+          <p>one personal dashboard</p>
+
+        </div>
+
+      </div>
+
+
+      <!-- CORE FEATURES -->
+
+      <div class="life-features">
+
+        <div class="life-feature-card">
+          <span>01</span>
+          <div class="feature-icon">🌱</div>
+          <h3>Habits</h3>
+          <p>
+            Keep everyday routines and recurring personal goals
+            visible in one place.
+          </p>
+        </div>
+
+
+        <div class="life-feature-card">
+          <span>02</span>
+          <div class="feature-icon">💼</div>
+          <h3>Job Applications</h3>
+          <p>
+            Keep application progress alongside the rest of my
+            daily productivity workflow.
+          </p>
+        </div>
+
+
+        <div class="life-feature-card">
+          <span>03</span>
+          <div class="feature-icon">✓</div>
+          <h3>To-Dos</h3>
+          <p>
+            Organize the tasks I need to complete without needing
+            another separate productivity tool.
+          </p>
+        </div>
+
+
+        <div class="life-feature-card">
+          <span>04</span>
+          <div class="feature-icon">⌨</div>
+          <h3>LeetCode</h3>
+          <p>
+            Track coding-practice progress as part of the same
+            system I use for career planning.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- APP ARCHITECTURE -->
+    <section class="life-section">
+
+      <div class="section-label">APP ARCHITECTURE</div>
+
+      <h2 class="section-title">
+        Keeping the UI<br>
+        <em>separate from the data.</em>
+      </h2>
+
+      <p class="life-intro">
+        LifeTracker uses an MVVM-style structure to separate SwiftUI views
+        from application state and data logic, making each tracker easier
+        to organize and maintain as the app grows.
+      </p>
+
+
+      <!-- MVVM VISUAL -->
+      <div class="mvvm-demo">
+
+        <!-- VIEW -->
+        <div class="mvvm-layer">
+
+          <span class="mini-label">VIEW</span>
+
+          <div class="mvvm-box view-box">
+            <div class="mvvm-icon">◫</div>
+
+            <h3>SwiftUI</h3>
+
+            <p>
+              Displays tracker data and handles user interactions.
+            </p>
+
+            <div class="mvvm-tags">
+              <span>Habits</span>
+              <span>Jobs</span>
+              <span>Tasks</span>
+              <span>LeetCode</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="mvvm-arrow">
+          <span>↓ actions</span>
+          <span>↑ state</span>
+        </div>
+
+
+        <!-- VIEWMODEL -->
+        <div class="mvvm-layer">
+
+          <span class="mini-label">VIEW MODEL</span>
+
+          <div class="mvvm-box viewmodel-box">
+            <div class="mvvm-icon">⚙</div>
+
+            <h3>Application Logic</h3>
+
+            <p>
+              Manages state changes and connects the interface to
+              persistent application data.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="mvvm-arrow">
+          <span>↓ save</span>
+          <span>↑ load</span>
+        </div>
+
+
+        <!-- MODEL -->
+        <div class="mvvm-layer">
+
+          <span class="mini-label">MODEL + STORAGE</span>
+
+          <div class="mvvm-box model-box">
+            <div class="mvvm-icon">◇</div>
+
+            <h3>Local Data</h3>
+
+            <p>
+              Tracker information persists locally so progress remains
+              available between app sessions.
+            </p>
+
+            <div class="storage-pill">
+              UserDefaults
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ARCHITECTURE BENEFITS -->
+      <div class="life-architecture-grid">
+
+        <div>
+          <span>01</span>
+
+          <h3>Separate</h3>
+
+          <p>
+            UI code stays focused on presentation instead of containing
+            every piece of application logic.
+          </p>
+        </div>
+
+
+        <div>
+          <span>02</span>
+
+          <h3>Observe</h3>
+
+          <p>
+            SwiftUI can react to state changes and update the interface
+            when tracked information changes.
+          </p>
+        </div>
+
+
+        <div>
+          <span>03</span>
+
+          <h3>Persist</h3>
+
+          <p>
+            Local persistence keeps personal tracking data available
+            when the app is closed and reopened.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PRODUCT FEATURES -->
+    <section class="life-section">
+
+      <div class="section-label">PRODUCT DESIGN</div>
+
+      <h2 class="section-title">
+        Built around the things<br>
+        <em>I actually track.</em>
+      </h2>
+
+      <p class="life-intro">
+        Instead of building a generic productivity app, I designed each
+        part of LifeTracker around a workflow I regularly use — from
+        daily habits to job searching and technical interview practice.
+      </p>
+
+
+      <div class="life-product-grid">
+
+        <!-- HABITS -->
+        <div class="life-product-card">
+
+          <div class="product-card-number">01</div>
+          <div class="product-card-icon">🌱</div>
+
+          <span class="mini-label">ACTIVITY TRACKER</span>
+
+          <h3>Daily habits that feel rewarding.</h3>
+
+          <p>
+            Activities can be customized with their own emoji and color,
+            logged from a calendar, and tracked against daily goals.
+          </p>
+
+          <div class="product-feature-list">
+            <span>Custom activities</span>
+            <span>Calendar logging</span>
+            <span>Daily goals</span>
+            <span>Automatic streaks</span>
+            <span>Goal celebrations 🎉</span>
+          </div>
+
+        </div>
+
+
+        <!-- JOBS -->
+        <div class="life-product-card">
+
+          <div class="product-card-number">02</div>
+          <div class="product-card-icon">💼</div>
+
+          <span class="mini-label">JOB TRACKER</span>
+
+          <h3>A tiny personal ATS.</h3>
+
+          <p>
+            Applications store the information I need while job searching,
+            including company, role, status, application date, job link,
+            and the original job description.
+          </p>
+
+          <div class="product-feature-list">
+            <span>Application status</span>
+            <span>Job descriptions</span>
+            <span>Job links</span>
+            <span>Status filtering</span>
+            <span>One-tap updates</span>
+          </div>
+
+        </div>
+
+
+        <!-- TODO -->
+        <div class="life-product-card">
+
+          <div class="product-card-number">03</div>
+          <div class="product-card-icon">✓</div>
+
+          <span class="mini-label">TO-DO</span>
+
+          <h3>Tasks ordered by what matters.</h3>
+
+          <p>
+            Tasks support priority levels and optional due dates, with
+            automatic ordering to keep urgent work visible.
+          </p>
+
+          <div class="product-feature-list">
+            <span>Low · Medium · High</span>
+            <span>Due dates</span>
+            <span>Automatic sorting</span>
+            <span>Overdue highlighting</span>
+            <span>Completed section</span>
+          </div>
+
+        </div>
+
+
+        <!-- LEETCODE -->
+        <div class="life-product-card">
+
+          <div class="product-card-number">04</div>
+          <div class="product-card-icon">⌨</div>
+
+          <span class="mini-label">LEETCODE JOURNAL</span>
+
+          <h3>More than a solved counter.</h3>
+
+          <p>
+            Each problem can store its metadata and complete solution,
+            turning coding practice into a searchable personal reference.
+          </p>
+
+          <div class="product-feature-list">
+            <span>Difficulty</span>
+            <span>Language</span>
+            <span>Topic tags</span>
+            <span>Solution code</span>
+            <span>Search & filters</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- APP SHOWCASE -->
+    <section class="life-section">
+
+      <div class="section-label">INSIDE THE APP</div>
+
+      <h2 class="section-title">
+        One app.<br>
+        <em>My whole workflow.</em>
+      </h2>
+
+      <p class="life-intro">
+        Each part of LifeTracker is designed around a different piece
+        of my daily workflow while keeping the experience visually
+        consistent across the app.
+      </p>
+
+
+      <div class="life-showcase">
+
+        <div class="showcase-item showcase-large">
+
+          <div class="showcase-image">
+            <img
+              src="images/tracker.png"
+              alt="LifeTracker activity tracker screen"
+            >
+          </div>
+
+          <div class="showcase-copy">
+            <span class="mini-label">ACTIVITY TRACKER</span>
+            <h3>Start with today.</h3>
+
+            <p>
+              Daily activities stay front and center, making it easy
+              to log progress and see how the day is going.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="showcase-item">
+
+          <div class="showcase-image">
+            <img
+              src="images/summary.png"
+              alt="LifeTracker summary screen"
+            >
+          </div>
+
+          <div class="showcase-copy">
+            <span class="mini-label">SUMMARY</span>
+            <h3>See the bigger picture.</h3>
+          </div>
+
+        </div>
+
+
+        <div class="showcase-item">
+
+          <div class="showcase-image">
+            <img
+              src="images/jobs.png"
+              alt="LifeTracker job application tracker"
+            >
+          </div>
+
+          <div class="showcase-copy">
+            <span class="mini-label">JOB SEARCH</span>
+            <h3>Applications, organized.</h3>
+          </div>
+
+        </div>
+
+
+        <div class="showcase-item">
+
+          <div class="showcase-image">
+            <img
+              src="images/todo.png"
+              alt="LifeTracker to-do list"
+            >
+          </div>
+
+          <div class="showcase-copy">
+            <span class="mini-label">TO-DO</span>
+            <h3>Know what's next.</h3>
+          </div>
+
+        </div>
+
+
+        <div class="showcase-item">
+
+          <div class="showcase-image">
+            <img
+              src="images/leetcode.png"
+              alt="LifeTracker LeetCode journal"
+            >
+          </div>
+
+          <div class="showcase-copy">
+            <span class="mini-label">LEETCODE</span>
+            <h3>Track the grind.</h3>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- LOCAL PERSISTENCE -->
+    <section class="life-section">
+
+      <div class="section-label">LOCAL PERSISTENCE</div>
+
+      <h2 class="section-title">
+        Close the app.<br>
+        <em>Your progress stays.</em>
+      </h2>
+
+      <p class="life-intro">
+        LifeTracker stores its data locally using Codable models and
+        UserDefaults. This keeps the app lightweight and fully offline
+        while preserving tracker data between sessions.
+      </p>
+
+
+      <!-- DATA FLOW -->
+      <div class="persistence-demo">
+
+        <!-- MODEL -->
+        <div class="persistence-step">
+
+          <span class="persistence-number">01</span>
+          <span class="mini-label">SWIFT MODEL</span>
+
+          <div class="persistence-box model-data">
+            <h3>App Data</h3>
+
+            <div class="data-example">
+              <code>JobApplication</code>
+              <code>TodoItem</code>
+              <code>LeetCodeProblem</code>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="persistence-arrow">
+          <span>Codable</span>
+          →
+        </div>
+
+
+        <!-- ENCODE -->
+        <div class="persistence-step">
+
+          <span class="persistence-number">02</span>
+          <span class="mini-label">ENCODE</span>
+
+          <div class="persistence-box encoded-data">
+            <h3>Serialized Data</h3>
+
+            <div class="data-symbol">
+              { ... }
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="persistence-arrow">
+          <span>save</span>
+          →
+        </div>
+
+
+        <!-- STORAGE -->
+        <div class="persistence-step">
+
+          <span class="persistence-number">03</span>
+          <span class="mini-label">LOCAL STORAGE</span>
+
+          <div class="persistence-box stored-data">
+            <h3>UserDefaults</h3>
+
+            <div class="storage-icon">▤</div>
+
+            <small>on-device persistence</small>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LOAD FLOW -->
+      <div class="persistence-load">
+
+        <span class="mini-label">NEXT APP LAUNCH</span>
+
+        <div class="load-flow">
+          <span>UserDefaults</span>
+          <strong>→</strong>
+          <span>Decode</span>
+          <strong>→</strong>
+          <span>App State</span>
+          <strong>→</strong>
+          <span>SwiftUI</span>
+        </div>
+
+      </div>
+
+
+      <!-- WHY LOCAL -->
+      <div class="persistence-benefits">
+
+        <div>
+          <span>01</span>
+
+          <h3>Offline First</h3>
+
+          <p>
+            The core tracking experience does not depend on a remote
+            server or network connection.
+          </p>
+        </div>
+
+
+        <div>
+          <span>02</span>
+
+          <h3>Simple Storage</h3>
+
+          <p>
+            Codable models provide a straightforward way to serialize
+            the structured data used throughout the app.
+          </p>
+        </div>
+
+
+        <div>
+          <span>03</span>
+
+          <h3>Persistent State</h3>
+
+          <p>
+            Saved information can be restored when LifeTracker launches,
+            allowing progress to continue across sessions.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- WHAT I LEARNED -->
+    <section class="life-section">
+
+      <div class="section-label">WHAT I LEARNED</div>
+
+      <h2 class="section-title">
+        Building for myself<br>
+        <em>changed how I design.</em>
+      </h2>
+
+      <p class="life-intro">
+        LifeTracker started from a real problem in my own workflow.
+        Building something I would personally use pushed me to think
+        beyond implementation and consider organization, usability,
+        persistence, and how features fit together as a product.
+      </p>
+
+
+      <div class="learning-grid">
+
+        <div class="learning-card">
+          <span>01</span>
+
+          <h3>Design Around the User</h3>
+
+          <p>
+            Starting from my own workflow helped me decide which features
+            were actually useful instead of adding functionality simply
+            because it was possible.
+          </p>
+        </div>
+
+
+        <div class="learning-card">
+          <span>02</span>
+
+          <h3>Structure Matters</h3>
+
+          <p>
+            Separating SwiftUI views from application state made the app
+            easier to reason about as more trackers and interactions were
+            added.
+          </p>
+        </div>
+
+
+        <div class="learning-card">
+          <span>03</span>
+
+          <h3>Persistence Is Part of UX</h3>
+
+          <p>
+            A productivity app only feels useful when its state survives
+            between sessions, making local persistence an important part
+            of the overall experience.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- FINAL TAKEAWAY -->
+      <div class="life-takeaway">
+
+        <span class="mini-label">BIGGEST TAKEAWAY</span>
+
+        <h3>
+          The best feature isn't always another feature.
+        </h3>
+
+        <p>
+          Building LifeTracker taught me to think about software as a
+          complete product: what problem it solves, how information should
+          be organized, how state should be managed, and whether the final
+          experience is something I would actually want to use.
+        </p>
+
+      </div>
+
+
+      <!-- SOURCE CODE -->
+      <div class="project-source">
+
+        <div>
+          <span class="mini-label">SOURCE CODE</span>
+
+          <h3>Explore LifeTracker.</h3>
+
+          <p>
+            View the SwiftUI implementation, models, views, and application
+            structure on GitHub.
+          </p>
+        </div>
+
+        <a
+          href="https://github.com/bruhitsyandrea/LifeTracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          View on GitHub ↗
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

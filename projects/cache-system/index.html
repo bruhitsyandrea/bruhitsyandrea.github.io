@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>KVS Cache — Andrea Chen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../../index.html">andrea chen</a>
+
+    <ul class="nav-links">
+      <li><a href="../../index.html#about">About</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#projects">Projects</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+
+      <a href="../../index.html#projects" class="back-link">
+        ← All Projects
+      </a>
+
+      <div class="project-status completed-status">
+        ✓ Completed
+      </div>
+
+      <h1>
+        Key-Value<br>
+        <em>Cache</em>
+      </h1>
+
+      <p class="hero-desc">
+        Exploring how cache replacement policies make different
+        decisions when memory is limited.
+      </p>
+
+      <div class="project-tech">
+        <span class="tech-tag pill-rose">C</span>
+        <span class="tech-tag pill-mint">Caching</span>
+        <span class="tech-tag pill-sky">FIFO</span>
+        <span class="tech-tag pill-lavender">LRU</span>
+        <span class="tech-tag pill-peach">Clock</span>
+      </div>
+
+    </section>
+
+
+    <!-- THE PROBLEM -->
+    <section class="cache-section">
+
+      <div class="section-label">THE PROBLEM</div>
+
+      <h2 class="section-title">
+        The cache is full.<br>
+        <em>Who has to leave?</em>
+      </h2>
+
+      <p class="cache-intro">
+        A cache has limited capacity. When new data needs to be stored
+        and every slot is already occupied, the system must decide
+        which existing entry should be evicted.
+      </p>
+
+
+      <!-- CACHE VISUAL -->
+      <div class="cache-demo">
+
+        <span class="mini-label">CACHE CAPACITY: 4</span>
+
+        <div class="cache-slots">
+
+          <div class="cache-slot">
+            <span>A</span>
+            <small>key_a</small>
+          </div>
+
+          <div class="cache-slot">
+            <span>B</span>
+            <small>key_b</small>
+          </div>
+
+          <div class="cache-slot">
+            <span>C</span>
+            <small>key_c</small>
+          </div>
+
+          <div class="cache-slot">
+            <span>D</span>
+            <small>key_d</small>
+          </div>
+
+        </div>
+
+
+        <div class="cache-request">
+
+          <div class="new-entry">
+            <span>E</span>
+            <small>NEW ENTRY</small>
+          </div>
+
+          <span class="cache-arrow">→</span>
+
+          <div class="cache-full">
+            CACHE FULL
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- QUESTION -->
+      <div class="eviction-question">
+
+        <span class="mini-label">EVICTION DECISION</span>
+
+        <h3>
+          Which existing entry should be replaced?
+        </h3>
+
+        <p>
+          The answer depends entirely on the replacement policy.
+          FIFO, LRU, and Clock use different information to choose
+          a victim.
+        </p>
+
+      </div>
+
+
+      <!-- THREE POLICIES -->
+      <div class="policy-preview">
+
+        <div class="policy-preview-card">
+          <span>01</span>
+          <h3>FIFO</h3>
+          <p>Evict the entry that entered the cache first.</p>
+        </div>
+
+        <div class="policy-preview-card">
+          <span>02</span>
+          <h3>LRU</h3>
+          <p>Evict the entry that has gone unused the longest.</p>
+        </div>
+
+        <div class="policy-preview-card">
+          <span>03</span>
+          <h3>Clock</h3>
+          <p>Approximate LRU using reference bits and a moving clock hand.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- REPLACEMENT POLICIES -->
+    <section class="cache-section">
+
+      <div class="section-label">REPLACEMENT POLICIES</div>
+
+      <h2 class="section-title">
+        Same cache.<br>
+        <em>Different decisions.</em>
+      </h2>
+
+      <p class="cache-intro">
+        Each replacement policy answers the same question differently:
+        when the cache is full, which entry should be sacrificed to make
+        room for new data?
+      </p>
+
+
+      <div class="policy-comparison">
+
+        <!-- FIFO -->
+        <div class="policy-card fifo-policy">
+
+          <div class="policy-header">
+            <span class="policy-number">01</span>
+
+            <div>
+              <span class="mini-label">FIRST IN, FIRST OUT</span>
+              <h3>FIFO</h3>
+            </div>
+          </div>
+
+          <p>
+            FIFO tracks insertion order. When the cache reaches capacity,
+            the entry that has been stored the longest is evicted first.
+          </p>
+
+          <div class="policy-cache">
+
+            <div class="policy-entry victim">
+              <span>A</span>
+              <small>OLDEST</small>
+            </div>
+
+            <div class="policy-entry">
+              <span>B</span>
+            </div>
+
+            <div class="policy-entry">
+              <span>C</span>
+            </div>
+
+            <div class="policy-entry">
+              <span>D</span>
+            </div>
+
+          </div>
+
+          <div class="eviction-result">
+            <span>E arrives</span>
+            <span>→</span>
+            <strong>Evict A</strong>
+          </div>
+
+        </div>
+
+
+        <!-- LRU -->
+        <div class="policy-card lru-policy">
+
+          <div class="policy-header">
+            <span class="policy-number">02</span>
+
+            <div>
+              <span class="mini-label">LEAST RECENTLY USED</span>
+              <h3>LRU</h3>
+            </div>
+          </div>
+
+          <p>
+            LRU considers access history instead of insertion order.
+            The entry that has gone unused for the longest time becomes
+            the eviction candidate.
+          </p>
+
+          <div class="policy-cache">
+
+            <div class="policy-entry">
+              <span>A</span>
+              <small>recent</small>
+            </div>
+
+            <div class="policy-entry victim">
+              <span>B</span>
+              <small>LEAST USED</small>
+            </div>
+
+            <div class="policy-entry">
+              <span>C</span>
+              <small>recent</small>
+            </div>
+
+            <div class="policy-entry">
+              <span>D</span>
+              <small>recent</small>
+            </div>
+
+          </div>
+
+          <div class="eviction-result">
+            <span>E arrives</span>
+            <span>→</span>
+            <strong>Evict B</strong>
+          </div>
+
+        </div>
+
+
+        <!-- CLOCK -->
+        <div class="policy-card clock-policy">
+
+          <div class="policy-header">
+            <span class="policy-number">03</span>
+
+            <div>
+              <span class="mini-label">SECOND CHANCE</span>
+              <h3>Clock</h3>
+            </div>
+          </div>
+
+          <p>
+            Clock approximates LRU with less bookkeeping. Entries carry
+            reference bits, while a moving clock hand searches for an
+            entry that has not recently been referenced.
+          </p>
+
+
+          <div class="clock-demo">
+
+            <div class="clock-entry clock-top">
+              <span>A</span>
+              <small>ref 1</small>
+            </div>
+
+            <div class="clock-entry clock-right">
+              <span>B</span>
+              <small>ref 0</small>
+            </div>
+
+            <div class="clock-entry clock-bottom">
+              <span>C</span>
+              <small>ref 1</small>
+            </div>
+
+            <div class="clock-entry clock-left">
+              <span>D</span>
+              <small>ref 1</small>
+            </div>
+
+            <div class="clock-center">
+              <span class="clock-hand">↗</span>
+              <small>CLOCK HAND</small>
+            </div>
+
+          </div>
+
+          <div class="eviction-result">
+            <span>scan reference bits</span>
+            <span>→</span>
+            <strong>Evict ref = 0</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CACHE ARCHITECTURE -->
+    <section class="cache-section">
+
+      <div class="section-label">ARCHITECTURE</div>
+
+      <h2 class="section-title">
+        One interface.<br>
+        <em>Three replacement policies.</em>
+      </h2>
+
+      <p class="cache-intro">
+        The cache separates key-value operations from replacement-policy
+        behavior, allowing different eviction strategies to be implemented
+        and compared without changing how the cache is used.
+      </p>
+
+
+      <div class="cache-architecture">
+
+        <!-- CLIENT -->
+        <div class="cache-arch-layer">
+
+          <span class="mini-label">APPLICATION</span>
+
+          <div class="cache-arch-box">
+            <h3>Key-Value Operations</h3>
+            <p>GET · SET · DELETE</p>
+          </div>
+
+        </div>
+
+
+        <div class="cache-arch-arrow">↓</div>
+
+
+        <!-- CACHE -->
+        <div class="cache-arch-layer cache-layer-highlight">
+
+          <span class="mini-label">CACHE LAYER</span>
+
+          <div class="cache-arch-box">
+            <h3>Cache Lookup</h3>
+
+            <div class="cache-decision">
+
+              <div>
+                <span>HIT</span>
+                <small>return cached value</small>
+              </div>
+
+              <div>
+                <span>MISS</span>
+                <small>fetch from KVS</small>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="cache-arch-arrow">↓</div>
+
+
+        <!-- POLICY -->
+        <div class="cache-policy-layer">
+
+          <span class="mini-label">REPLACEMENT POLICY</span>
+
+          <div class="cache-policy-options">
+
+            <div>
+              <strong>FIFO</strong>
+              <small>insertion order</small>
+            </div>
+
+            <div>
+              <strong>LRU</strong>
+              <small>access history</small>
+            </div>
+
+            <div>
+              <strong>Clock</strong>
+              <small>reference bits</small>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="cache-arch-arrow">↓</div>
+
+
+        <!-- BASE KVS -->
+        <div class="cache-arch-layer">
+
+          <span class="mini-label">BACKING STORE</span>
+
+          <div class="cache-arch-box base-kvs-box">
+            <h3>Base Key-Value Store</h3>
+            <p>Persistent source of key-value data</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FLOW EXPLANATION -->
+      <div class="cache-flow-grid">
+
+        <div>
+          <span>01</span>
+          <h3>Look Up</h3>
+          <p>
+            A request first checks whether the requested key is already
+            available in the cache.
+          </p>
+        </div>
+
+        <div>
+          <span>02</span>
+          <h3>Hit or Miss</h3>
+          <p>
+            A cache hit can return immediately. A miss requires retrieving
+            the value from the backing key-value store.
+          </p>
+        </div>
+
+        <div>
+          <span>03</span>
+          <h3>Make Space</h3>
+          <p>
+            If the cache is full, the active replacement policy selects
+            an existing entry for eviction.
+          </p>
+        </div>
+
+        <div>
+          <span>04</span>
+          <h3>Cache It</h3>
+          <p>
+            The new value enters the cache so future requests can potentially
+            be served without another backing-store lookup.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- POLICY TRADEOFFS -->
+    <section class="cache-section">
+
+      <div class="section-label">TRADEOFFS</div>
+
+      <h2 class="section-title">
+        There is no perfect<br>
+        <em>eviction policy.</em>
+      </h2>
+
+      <p class="cache-intro">
+        Each policy balances implementation complexity, bookkeeping,
+        and how accurately it captures recent usage.
+      </p>
+
+
+      <div class="tradeoff-table">
+
+        <!-- HEADER -->
+        <div class="tradeoff-row tradeoff-header">
+          <div>POLICY</div>
+          <div>DECISION</div>
+          <div>BOOKKEEPING</div>
+          <div>TRADEOFF</div>
+        </div>
+
+
+        <!-- FIFO -->
+        <div class="tradeoff-row">
+
+          <div class="tradeoff-policy">
+            <span class="tradeoff-dot fifo-dot"></span>
+            <strong>FIFO</strong>
+          </div>
+
+          <div>
+            Oldest entry
+          </div>
+
+          <div>
+            <span class="tradeoff-level low">LOW</span>
+          </div>
+
+          <div>
+            Simple, but ignores how often or recently an entry is used.
+          </div>
+
+        </div>
+
+
+        <!-- LRU -->
+        <div class="tradeoff-row">
+
+          <div class="tradeoff-policy">
+            <span class="tradeoff-dot lru-dot"></span>
+            <strong>LRU</strong>
+          </div>
+
+          <div>
+            Least recently used
+          </div>
+
+          <div>
+            <span class="tradeoff-level high">HIGHER</span>
+          </div>
+
+          <div>
+            Uses access history, but requires additional tracking.
+          </div>
+
+        </div>
+
+
+        <!-- CLOCK -->
+        <div class="tradeoff-row">
+
+          <div class="tradeoff-policy">
+            <span class="tradeoff-dot clock-dot"></span>
+            <strong>Clock</strong>
+          </div>
+
+          <div>
+            Reference bit + scan
+          </div>
+
+          <div>
+            <span class="tradeoff-level medium">MEDIUM</span>
+          </div>
+
+          <div>
+            Approximates LRU while reducing bookkeeping overhead.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TAKEAWAY -->
+      <div class="cache-takeaway">
+
+        <span class="mini-label">KEY TAKEAWAY</span>
+
+        <p>
+          A replacement policy is a tradeoff: better information about
+          usage can improve eviction decisions, but maintaining that
+          information also costs additional state and work.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- IMPLEMENTATION -->
+    <section class="cache-section">
+
+      <div class="section-label">IMPLEMENTATION</div>
+
+      <h2 class="section-title">
+        Same interface.<br>
+        <em>Different internals.</em>
+      </h2>
+
+      <p class="cache-intro">
+        I implemented the cache in C with separate modules for each
+        replacement strategy, allowing FIFO, LRU, and Clock to provide
+        the same cache behavior while maintaining different eviction state.
+      </p>
+
+
+      <!-- SOURCE STRUCTURE -->
+      <div class="implementation-files">
+
+        <div class="implementation-file">
+          <div class="file-name">
+            <span>01</span>
+            <code>kvs_fifo.c</code>
+          </div>
+
+          <p>
+            Maintains insertion order and removes the oldest cached
+            entry when capacity is reached.
+          </p>
+        </div>
+
+
+        <div class="implementation-file">
+          <div class="file-name">
+            <span>02</span>
+            <code>kvs_lru.c</code>
+          </div>
+
+          <p>
+            Tracks access history so recently used entries remain
+            cached while older unused entries become eviction candidates.
+          </p>
+        </div>
+
+
+        <div class="implementation-file">
+          <div class="file-name">
+            <span>03</span>
+            <code>kvs_clock.c</code>
+          </div>
+
+          <p>
+            Uses reference information and a moving position to implement
+            the Clock replacement strategy.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- WHAT I LEARNED -->
+
+      <div class="cache-learning">
+
+        <div class="section-label">WHAT I LEARNED</div>
+
+        <h2 class="section-title">
+          Small policy changes.<br>
+          <em>Different system behavior.</em>
+        </h2>
+
+
+        <div class="learning-grid">
+
+          <div class="learning-card">
+            <span>01</span>
+
+            <h3>Data Structures Matter</h3>
+
+            <p>
+              Replacement algorithms require different metadata and
+              bookkeeping depending on what information the policy needs.
+            </p>
+          </div>
+
+
+          <div class="learning-card">
+            <span>02</span>
+
+            <h3>Performance Has a Cost</h3>
+
+            <p>
+              More informed eviction decisions can require additional
+              state updates and tracking on cache operations.
+            </p>
+          </div>
+
+
+          <div class="learning-card">
+            <span>03</span>
+
+            <h3>Design for Change</h3>
+
+            <p>
+              Separating cache behavior from replacement policy makes
+              different algorithms easier to implement, compare, and reason about.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SOURCE CODE -->
+
+      <div class="project-source">
+
+        <div>
+          <span class="mini-label">SOURCE CODE</span>
+
+          <h3>Explore the implementation.</h3>
+
+          <p>
+            View the FIFO, LRU, and Clock cache implementations on GitHub.
+          </p>
+        </div>
+
+        <a
+          href="https://github.com/bruhitsyandrea/KVS-Cache"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          View on GitHub ↗
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

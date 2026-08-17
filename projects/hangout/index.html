@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>when are we hanging out — Andrea Chen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../../index.html">andrea chen</a>
+
+    <ul class="nav-links">
+      <li><a href="../../index.html#about">About</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#projects">Projects</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+
+      <a href="../../index.html#projects" class="back-link">
+        ← All Projects
+      </a>
+
+      <div class="project-status completed-status">
+        ✓ Live
+      </div>
+
+      <h1>
+        when are we<br>
+        <em>hanging out?</em>
+      </h1>
+
+      <p class="hero-desc">
+        A café-themed scheduling app that turns making plans with
+        friends into filling out a tiny order slip.
+      </p>
+
+      <div class="project-tech">
+        <span class="tech-tag pill-peach">React</span>
+        <span class="tech-tag pill-lavender">TypeScript</span>
+        <span class="tech-tag pill-mint">Supabase</span>
+        <span class="tech-tag pill-sky">Vercel</span>
+      </div>
+
+      <div class="hangout-actions">
+
+        <a
+          href="https://when-are-we-hanging-out.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          Visit Live Site ↗
+        </a>
+
+        <a
+          href="https://github.com/bruhitsyandrea/when-are-we-hanging-out"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn"
+        >
+          GitHub ↗
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- THE IDEA -->
+    <section class="hangout-section">
+
+      <div class="section-label">THE IDEA</div>
+
+      <h2 class="section-title">
+        Making plans shouldn't<br>
+        <em>take 47 messages.</em>
+      </h2>
+
+      <p class="hangout-intro">
+        Instead of sending the usual back-and-forth messages asking
+        when everyone is free and what they want to do, I turned the
+        process into a small scheduling experience inspired by a
+        café order slip.
+      </p>
+
+
+      <!-- CHAT CHAOS → APP -->
+      <div class="hangout-problem">
+
+        <div class="chat-chaos">
+
+          <span class="mini-label">THE GROUP CHAT</span>
+
+          <div class="chat-bubbles">
+
+            <span>when are you free?</span>
+            <span>idk what about friday 😭</span>
+            <span>what are we doing</span>
+            <span>wait who's coming</span>
+            <span>what time???</span>
+
+          </div>
+
+        </div>
+
+
+        <div class="hangout-transform">
+          →
+        </div>
+
+
+        <div class="order-preview">
+
+          <span class="mini-label">THE ORDER SLIP</span>
+
+          <div class="mini-receipt">
+
+            <div class="receipt-heading">
+              ☕ HANGOUT ORDER
+            </div>
+
+            <div class="receipt-line"></div>
+
+            <div class="receipt-field">
+              <span>NAME</span>
+              <strong>andrea</strong>
+            </div>
+
+            <div class="receipt-field">
+              <span>DATE</span>
+              <strong>friday</strong>
+            </div>
+
+            <div class="receipt-field">
+              <span>ACTIVITY</span>
+              <strong>café + yap</strong>
+            </div>
+
+            <div class="receipt-line"></div>
+
+            <div class="receipt-footer">
+              ORDER RECEIVED ✓
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FULL STACK FLOW -->
+    <section class="hangout-section">
+
+      <div class="section-label">HOW IT WORKS</div>
+
+      <h2 class="section-title">
+        From an order slip<br>
+        <em>to the database.</em>
+      </h2>
+
+      <p class="hangout-intro">
+        The interface keeps scheduling playful and simple, while the
+        application handles the data flow behind the scenes. A completed
+        hangout request is collected by the React interface and stored
+        in Supabase.
+      </p>
+
+
+      <!-- DATA FLOW -->
+      <div class="hangout-flow">
+
+        <!-- STEP 1 -->
+        <div class="flow-card">
+
+          <span class="flow-number">01</span>
+          <span class="mini-label">USER</span>
+
+          <div class="flow-icon">☕</div>
+
+          <h3>Fill the Order</h3>
+
+          <p>
+            A friend enters their name, chooses when they want to hang
+            out, and adds what they want to do.
+          </p>
+
+          <div class="flow-mini-data">
+            <span>name</span>
+            <span>date</span>
+            <span>activity</span>
+          </div>
+
+        </div>
+
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+
+        <!-- STEP 2 -->
+        <div class="flow-card">
+
+          <span class="flow-number">02</span>
+          <span class="mini-label">FRONTEND</span>
+
+          <div class="flow-icon">⚛</div>
+
+          <h3>React + TypeScript</h3>
+
+          <p>
+            The interface manages the form state and prepares the
+            submitted information for storage.
+          </p>
+
+          <div class="flow-tech">
+            React
+          </div>
+
+        </div>
+
+
+        <div class="flow-arrow">
+          →
+        </div>
+
+
+        <!-- STEP 3 -->
+        <div class="flow-card">
+
+          <span class="flow-number">03</span>
+          <span class="mini-label">DATABASE</span>
+
+          <div class="flow-icon">◇</div>
+
+          <h3>Supabase</h3>
+
+          <p>
+            The submitted hangout information is sent to Supabase and
+            persisted in the application's database.
+          </p>
+
+          <div class="flow-tech">
+            PostgreSQL
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- EXAMPLE REQUEST -->
+      <div class="hangout-request-demo">
+
+        <div class="request-code">
+
+          <span class="mini-label">SUBMITTED DATA</span>
+
+          <pre><code>{
+      name: "andrea",
+      date: "friday",
+      activity: "café + yap"
+    }</code></pre>
+
+        </div>
+
+
+        <div class="request-middle">
+          <span>submit</span>
+          <strong>→</strong>
+        </div>
+
+
+        <div class="request-success">
+
+          <span class="mini-label">DATABASE</span>
+
+          <div class="success-check">
+            ✓
+          </div>
+
+          <h3>Order received.</h3>
+
+          <p>
+            The hangout request is now stored.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESPONSIBILITIES -->
+      <div class="hangout-stack-grid">
+
+        <div>
+          <span>01</span>
+
+          <h3>Capture</h3>
+
+          <p>
+            React components collect the information needed to create
+            a hangout request.
+          </p>
+        </div>
+
+
+        <div>
+          <span>02</span>
+
+          <h3>Manage</h3>
+
+          <p>
+            TypeScript keeps the application's data structures and
+            frontend logic organized.
+          </p>
+        </div>
+
+
+        <div>
+          <span>03</span>
+
+          <h3>Persist</h3>
+
+          <p>
+            Supabase provides persistent database storage so submissions
+            exist beyond the browser session.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PRODUCT DESIGN -->
+    <section class="hangout-section">
+
+      <div class="section-label">PRODUCT DESIGN</div>
+
+      <h2 class="section-title">
+        A scheduling form<br>
+        <em>that doesn't feel like one.</em>
+      </h2>
+
+      <p class="hangout-intro">
+        The goal wasn't only to collect scheduling information. I wanted
+        the interaction to feel casual and playful enough that sending
+        someone the link felt more like an invitation than filling out
+        another form.
+      </p>
+
+
+      <!-- DESIGN CONCEPT -->
+      <div class="hangout-design-demo">
+
+        <div class="design-form-side">
+
+          <span class="mini-label">THE INFORMATION</span>
+
+          <div class="boring-form">
+
+            <div>
+              <label>Name</label>
+              <span>________________</span>
+            </div>
+
+            <div>
+              <label>Date</label>
+              <span>________________</span>
+            </div>
+
+            <div>
+              <label>Activity</label>
+              <span>________________</span>
+            </div>
+
+            <button disabled>SUBMIT</button>
+
+          </div>
+
+          <p>
+            Functionally, this is all the app needs.
+          </p>
+
+        </div>
+
+
+        <div class="design-becomes">
+          <span>becomes</span>
+          →
+        </div>
+
+
+        <div class="design-receipt-side">
+
+          <span class="mini-label">THE EXPERIENCE</span>
+
+          <div class="design-receipt">
+
+            <div class="receipt-brand">
+              ☕
+              <strong>HANGOUT CAFÉ</strong>
+              <small>order with friends</small>
+            </div>
+
+            <div class="receipt-dashes"></div>
+
+            <div class="design-order-row">
+              <span>NAME</span>
+              <strong>andrea</strong>
+            </div>
+
+            <div class="design-order-row">
+              <span>WHEN</span>
+              <strong>friday</strong>
+            </div>
+
+            <div class="design-order-row">
+              <span>ORDER</span>
+              <strong>coffee + yap</strong>
+            </div>
+
+            <div class="receipt-dashes"></div>
+
+            <div class="receipt-total">
+              <span>TOTAL</span>
+              <strong>1 hangout ♡</strong>
+            </div>
+
+            <div class="receipt-thanks">
+              thank u for your order :)
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- DESIGN DECISIONS -->
+      <div class="hangout-design-grid">
+
+        <div class="hangout-design-card">
+
+          <span>01</span>
+          <div class="design-icon">☕</div>
+
+          <h3>Familiar Metaphor</h3>
+
+          <p>
+            Treating a hangout like a café order gives an ordinary form
+            a recognizable structure while adding personality.
+          </p>
+
+        </div>
+
+
+        <div class="hangout-design-card">
+
+          <span>02</span>
+          <div class="design-icon">♡</div>
+
+          <h3>Small & Personal</h3>
+
+          <p>
+            The app is intentionally focused on one tiny problem instead
+            of becoming a full calendar or social platform.
+          </p>
+
+        </div>
+
+
+        <div class="hangout-design-card">
+
+          <span>03</span>
+          <div class="design-icon">✎</div>
+
+          <h3>Low Friction</h3>
+
+          <p>
+            The interaction asks for only the information needed to turn
+            “we should hang out sometime” into an actual plan.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCT PRINCIPLE -->
+      <div class="hangout-principle">
+
+        <span class="mini-label">DESIGN PRINCIPLE</span>
+
+        <h3>
+          The interface can be part of the joke.
+        </h3>
+
+        <p>
+          The café theme doesn't change what the application needs to
+          accomplish, but it changes how the interaction feels. That
+          personality is part of what makes a tiny utility enjoyable
+          enough to actually send to someone.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- DEPLOYMENT -->
+    <section class="hangout-section">
+
+      <div class="section-label">DEPLOYMENT</div>
+
+      <h2 class="section-title">
+        From localhost<br>
+        <em>to an actual link.</em>
+      </h2>
+
+      <p class="hangout-intro">
+        The application is deployed on Vercel, turning the project into
+        something I can actually share with friends. The frontend connects
+        to Supabase for persistent storage while Vercel hosts the public
+        web experience.
+      </p>
+
+
+      <!-- DEPLOYMENT FLOW -->
+      <div class="deploy-flow">
+
+        <div class="deploy-card">
+          <span class="mini-label">SOURCE</span>
+          <div class="deploy-icon">⌥</div>
+          <h3>GitHub</h3>
+          <p>React + TypeScript source code</p>
+        </div>
+
+        <div class="deploy-arrow">→</div>
+
+        <div class="deploy-card">
+          <span class="mini-label">HOSTING</span>
+          <div class="deploy-icon">▲</div>
+          <h3>Vercel</h3>
+          <p>Public web deployment</p>
+        </div>
+
+        <div class="deploy-arrow">+</div>
+
+        <div class="deploy-card">
+          <span class="mini-label">DATA</span>
+          <div class="deploy-icon">◇</div>
+          <h3>Supabase</h3>
+          <p>Persistent hangout submissions</p>
+        </div>
+
+      </div>
+
+
+      <!-- RESULT -->
+      <div class="deploy-result">
+
+        <span class="mini-label">RESULT</span>
+
+        <h3>
+          Send the link. Fill the order. Make the plan.
+        </h3>
+
+        <p>
+          Deploying the project changed it from a local experiment into
+          a small product that other people can actually interact with.
+        </p>
+
+        <a
+          href="https://when-are-we-hanging-out.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+        >
+          Open the App ↗
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- WHAT I LEARNED -->
+    <section class="hangout-section">
+
+      <div class="section-label">WHAT I LEARNED</div>
+
+      <h2 class="section-title">
+        Small projects can still<br>
+        <em>teach the whole stack.</em>
+      </h2>
+
+      <p class="hangout-intro">
+        Building this project gave me experience taking a simple idea
+        through interface design, frontend implementation, persistent
+        storage, and deployment.
+      </p>
+
+
+      <div class="learning-grid">
+
+        <div class="learning-card">
+          <span>01</span>
+
+          <h3>Design Is Functional</h3>
+
+          <p>
+            Visual personality isn't separate from usability. The café
+            metaphor helped turn a basic form into an interaction that
+            feels appropriate for the social problem it solves.
+          </p>
+        </div>
+
+
+        <div class="learning-card">
+          <span>02</span>
+
+          <h3>Frontend Meets Data</h3>
+
+          <p>
+            Connecting the React interface to persistent storage made
+            the project more than a static UI and gave submitted
+            information somewhere meaningful to go.
+          </p>
+        </div>
+
+
+        <div class="learning-card">
+          <span>03</span>
+
+          <h3>Shipping Matters</h3>
+
+          <p>
+            Deployment made the application accessible outside my
+            development environment and turned it into something I
+            could actually share and use.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- FINAL TAKEAWAY -->
+      <div class="hangout-takeaway">
+
+        <span class="mini-label">BIGGEST TAKEAWAY</span>
+
+        <h3>
+          Not every useful product needs to solve a huge problem.
+        </h3>
+
+        <p>
+          Sometimes a tiny annoyance is enough. This project was an
+          exercise in taking one familiar social problem, giving it a
+          clear personality, and building the complete experience from
+          interface to persistent data to deployment.
+        </p>
+
+      </div>
+
+
+      <!-- LINKS -->
+      <div class="project-source">
+
+        <div>
+          <span class="mini-label">TRY IT YOURSELF</span>
+
+          <h3>Order a hangout.</h3>
+
+          <p>
+            Explore the live application or view the implementation
+            on GitHub.
+          </p>
+        </div>
+
+        <div class="hangout-source-buttons">
+
+          <a
+            href="https://when-are-we-hanging-out.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+          >
+            Live Site ↗
+          </a>
+
+          <a
+            href="https://github.com/bruhitsyandrea/when-are-we-hanging-out"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn"
+          >
+            GitHub ↗
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

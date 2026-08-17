@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Distributed KVS — Andrea Chen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../../index.html">andrea chen</a>
+
+    <ul class="nav-links">
+      <li><a href="../../index.html#about">About</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#projects">Projects</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+
+      <a href="../../index.html#projects" class="back-link">
+        ← All Projects
+      </a>
+
+      <div class="project-status completed-status">
+        ✓ Completed Coursework
+      </div>
+
+      <h1>
+        Distributed<br>
+        <em>Key-Value Store</em>
+      </h1>
+
+      <p class="hero-desc">
+        Exploring distributed systems by evolving a simple REST
+        key-value service into a replicated system with causal
+        metadata, gossip, and sharding.
+      </p>
+
+      <div class="project-tech">
+        <span class="tech-tag pill-rose">Python</span>
+        <span class="tech-tag pill-mint">FastAPI</span>
+        <span class="tech-tag pill-sky">Replication</span>
+        <span class="tech-tag pill-lavender">Vector Clocks</span>
+        <span class="tech-tag pill-peach">Sharding</span>
+      </div>
+
+    </section>
+
+
+    <!-- EVOLUTION -->
+    <section class="kvs-section">
+
+      <div class="section-label">PROJECT EVOLUTION</div>
+
+      <h2 class="section-title">
+        One service.<br>
+        <em>Four stages of complexity.</em>
+      </h2>
+
+      <p class="kvs-intro">
+        The project evolved across multiple assignments. Each stage
+        introduced a new distributed-systems problem, from basic
+        key-value operations to replication, causal ordering,
+        synchronization, and partitioning.
+      </p>
+
+
+      <div class="kvs-evolution">
+
+        <!-- 01 -->
+        <div class="evolution-stage">
+
+          <div class="evolution-number">01</div>
+
+          <div class="evolution-content">
+            <span class="mini-label">FOUNDATION</span>
+
+            <h3>Single-Node KVS</h3>
+
+            <p>
+              Started with a REST key-value service supporting the
+              fundamental operations needed to store, retrieve,
+              update, and delete data.
+            </p>
+
+            <div class="evolution-tags">
+              <span>GET</span>
+              <span>PUT</span>
+              <span>DELETE</span>
+              <span>REST API</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="evolution-line"></div>
+
+
+        <!-- 02 -->
+        <div class="evolution-stage">
+
+          <div class="evolution-number">02</div>
+
+          <div class="evolution-content">
+            <span class="mini-label">REPLICATION</span>
+
+            <h3>Multiple Nodes</h3>
+
+            <p>
+              Extended the service across multiple replicas and
+              introduced node views, synchronization, and propagation
+              of key-value operations between servers.
+            </p>
+
+            <div class="evolution-tags">
+              <span>Replication</span>
+              <span>Views</span>
+              <span>Synchronization</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="evolution-line"></div>
+
+
+        <!-- 03 -->
+        <div class="evolution-stage">
+
+          <div class="evolution-number">03</div>
+
+          <div class="evolution-content">
+            <span class="mini-label">CAUSAL CONSISTENCY</span>
+
+            <h3>Ordering Distributed Events</h3>
+
+            <p>
+              Added vector clocks and causal metadata to reason about
+              relationships between updates occurring across replicas.
+              Replica gossip was used to exchange and merge state.
+            </p>
+
+            <div class="evolution-tags">
+              <span>Vector Clocks</span>
+              <span>Causal Metadata</span>
+              <span>Gossip</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="evolution-line"></div>
+
+
+        <!-- 04 -->
+        <div class="evolution-stage experimental-stage">
+
+          <div class="evolution-number">04</div>
+
+          <div class="evolution-content">
+
+            <span class="mini-label">SHARDING</span>
+
+            <h3>Partitioning the System</h3>
+
+            <p>
+              Extended the architecture toward a sharded causal KVS,
+              working with shard routing, request proxying, replication
+              within shards, and distributed causal metadata.
+            </p>
+
+            <div class="evolution-tags">
+              <span>Shards</span>
+              <span>Routing</span>
+              <span>Proxying</span>
+              <span>Replication</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- DISTRIBUTED ARCHITECTURE -->
+    <section class="kvs-section">
+
+      <div class="section-label">DISTRIBUTED ARCHITECTURE</div>
+
+      <h2 class="section-title">
+        One database.<br>
+        <em>Multiple nodes.</em>
+      </h2>
+
+      <p class="kvs-intro">
+        Instead of storing state on a single server, the system distributes
+        responsibility across multiple nodes that communicate, replicate
+        updates, and synchronize state.
+      </p>
+
+
+      <div class="distributed-demo">
+
+        <!-- CLIENT -->
+        <div class="distributed-client">
+          <span class="mini-label">CLIENT</span>
+
+          <div class="distributed-box client-box">
+            <h3>HTTP Request</h3>
+            <p>GET · PUT · DELETE</p>
+          </div>
+        </div>
+
+        <div class="distributed-arrow">↓</div>
+
+
+        <!-- NODES -->
+        <div class="node-network">
+
+          <div class="node-card">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE A</span>
+
+            <h3>KVS Replica</h3>
+            <p>local state</p>
+          </div>
+
+
+          <div class="node-connection">
+            ← sync →
+          </div>
+
+
+          <div class="node-card">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE B</span>
+
+            <h3>KVS Replica</h3>
+            <p>local state</p>
+          </div>
+
+
+          <div class="node-connection">
+            ← sync →
+          </div>
+
+
+          <div class="node-card">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE C</span>
+
+            <h3>KVS Replica</h3>
+            <p>local state</p>
+          </div>
+
+        </div>
+
+
+        <!-- STATE -->
+        <div class="distributed-state">
+
+          <span class="mini-label">SHARED LOGICAL STATE</span>
+
+          <div class="state-values">
+            <span>user → Andrea</span>
+            <span>status → active</span>
+            <span>count → 42</span>
+          </div>
+
+          <p>
+            Each replica maintains its own local state while exchanging
+            updates with other nodes.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- DISTRIBUTED PROBLEMS -->
+
+      <div class="distributed-problems">
+
+        <div>
+          <span>01</span>
+          <h3>Replication</h3>
+          <p>
+            How do updates made on one node reach the other replicas?
+          </p>
+        </div>
+
+        <div>
+          <span>02</span>
+          <h3>Ordering</h3>
+          <p>
+            How can nodes determine whether one update happened before
+            another or whether they happened concurrently?
+          </p>
+        </div>
+
+        <div>
+          <span>03</span>
+          <h3>Synchronization</h3>
+          <p>
+            How do independently running replicas exchange and reconcile
+            their state?
+          </p>
+        </div>
+
+        <div>
+          <span>04</span>
+          <h3>Partitioning</h3>
+          <p>
+            How can responsibility for keys be divided as the system
+            grows beyond one group of replicas?
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VECTOR CLOCKS -->
+    <section class="kvs-section">
+
+      <div class="section-label">CAUSAL CONSISTENCY</div>
+
+      <h2 class="section-title">
+        Which update<br>
+        <em>happened first?</em>
+      </h2>
+
+      <p class="kvs-intro">
+        In a distributed system, there is no single global clock that can
+        reliably order every event. Vector clocks allow replicas to track
+        causal relationships between updates using logical counters.
+      </p>
+
+
+      <!-- VECTOR CLOCK DEMO -->
+      <div class="vector-demo">
+
+        <div class="vector-nodes">
+
+          <!-- NODE A -->
+          <div class="vector-node">
+
+            <span class="mini-label">NODE A</span>
+            <h3>Update X</h3>
+
+            <div class="vector-clock">
+              <span>A: 1</span>
+              <span>B: 0</span>
+            </div>
+
+            <div class="vector-arrow">↓</div>
+
+            <div class="vector-event">
+              <span>PUT</span>
+              <code>status = "online"</code>
+            </div>
+
+            <div class="vector-arrow">↓</div>
+
+            <div class="vector-clock active-clock">
+              <span>A: 2</span>
+              <span>B: 0</span>
+            </div>
+
+          </div>
+
+
+          <!-- CONCURRENT -->
+          <div class="concurrent-marker">
+            <span>≠</span>
+            <small>CONCURRENT</small>
+          </div>
+
+
+          <!-- NODE B -->
+          <div class="vector-node">
+
+            <span class="mini-label">NODE B</span>
+            <h3>Update Y</h3>
+
+            <div class="vector-clock">
+              <span>A: 0</span>
+              <span>B: 1</span>
+            </div>
+
+            <div class="vector-arrow">↓</div>
+
+            <div class="vector-event">
+              <span>PUT</span>
+              <code>status = "busy"</code>
+            </div>
+
+            <div class="vector-arrow">↓</div>
+
+            <div class="vector-clock active-clock">
+              <span>A: 0</span>
+              <span>B: 2</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- GOSSIP -->
+        <div class="vector-merge-arrow">
+          <span>↘ &nbsp;&nbsp;&nbsp; gossip / compare &nbsp;&nbsp;&nbsp; ↙</span>
+        </div>
+
+
+        <div class="vector-merge">
+
+          <span class="mini-label">CAUSAL METADATA</span>
+
+          <div class="merged-clock">
+            <span>A: 2</span>
+            <span>B: 2</span>
+          </div>
+
+          <p>
+            Comparing vector clocks reveals whether one update causally
+            follows another or whether the updates occurred concurrently.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- HOW TO READ -->
+      <div class="causal-grid">
+
+        <div class="causal-card">
+
+          <span class="causal-symbol">→</span>
+
+          <h3>Happened Before</h3>
+
+          <div class="clock-example">
+            [1, 0] → [2, 0]
+          </div>
+
+          <p>
+            If every component is less than or equal to another vector,
+            with at least one smaller component, the first event happened
+            before the second.
+          </p>
+
+        </div>
+
+
+        <div class="causal-card">
+
+          <span class="causal-symbol">∥</span>
+
+          <h3>Concurrent</h3>
+
+          <div class="clock-example">
+            [2, 0] ∥ [0, 2]
+          </div>
+
+          <p>
+            If neither vector dominates the other, the system cannot
+            establish a causal ordering between the two updates.
+          </p>
+
+        </div>
+
+
+        <div class="causal-card">
+
+          <span class="causal-symbol">max</span>
+
+          <h3>Merge</h3>
+
+          <div class="clock-example">
+            max([2,0], [0,2]) = [2,2]
+          </div>
+
+          <p>
+            When replicas exchange metadata, their logical clocks can be
+            merged by taking the maximum counter for each node.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- GOSSIP & SYNCHRONIZATION -->
+    <section class="kvs-section">
+
+      <div class="section-label">REPLICA SYNCHRONIZATION</div>
+
+      <h2 class="section-title">
+        Replicas need to<br>
+        <em>talk to each other.</em>
+      </h2>
+
+      <p class="kvs-intro">
+        Each replica maintains its own local state. Gossip allows nodes
+        to periodically exchange database state and causal metadata so
+        updates can propagate throughout the system.
+      </p>
+
+
+      <!-- GOSSIP VISUAL -->
+      <div class="gossip-demo">
+
+        <div class="gossip-network">
+
+          <!-- NODE A -->
+          <div class="gossip-node">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE A</span>
+
+            <h3>Replica A</h3>
+
+            <div class="gossip-data">
+              <span>x = 10</span>
+              <span>y = 20</span>
+            </div>
+
+            <small>[ A:3, B:1, C:2 ]</small>
+          </div>
+
+
+          <!-- NODE B -->
+          <div class="gossip-node">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE B</span>
+
+            <h3>Replica B</h3>
+
+            <div class="gossip-data">
+              <span>x = 10</span>
+              <span>z = 30</span>
+            </div>
+
+            <small>[ A:2, B:4, C:2 ]</small>
+          </div>
+
+
+          <!-- NODE C -->
+          <div class="gossip-node">
+            <span class="node-status"></span>
+            <span class="mini-label">NODE C</span>
+
+            <h3>Replica C</h3>
+
+            <div class="gossip-data">
+              <span>y = 20</span>
+              <span>z = 30</span>
+            </div>
+
+            <small>[ A:2, B:3, C:3 ]</small>
+          </div>
+
+
+          <!-- CONNECTIONS -->
+          <div class="gossip-center">
+
+            <span>↗</span>
+            <strong>GOSSIP</strong>
+            <span>↙</span>
+
+            <small>state + metadata</small>
+
+          </div>
+
+        </div>
+
+
+        <!-- AFTER SYNC -->
+
+        <div class="sync-arrow">
+          ↓ periodic exchange & merge
+        </div>
+
+
+        <div class="sync-result">
+
+          <span class="mini-label">AFTER SYNCHRONIZATION</span>
+
+          <div class="sync-values">
+            <span>x = 10</span>
+            <span>y = 20</span>
+            <span>z = 30</span>
+          </div>
+
+          <p>
+            By exchanging information with peers, replicas can learn about
+            updates they did not receive directly and reconcile their local
+            view of the distributed state.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- GOSSIP PROCESS -->
+
+      <div class="gossip-steps">
+
+        <div>
+          <span>01</span>
+          <h3>Exchange</h3>
+          <p>
+            A replica communicates its local database information and
+            causal metadata to another replica.
+          </p>
+        </div>
+
+        <div>
+          <span>02</span>
+          <h3>Compare</h3>
+          <p>
+            Vector clocks provide information about the causal relationship
+            between local and remote updates.
+          </p>
+        </div>
+
+        <div>
+          <span>03</span>
+          <h3>Merge</h3>
+          <p>
+            Incoming information is reconciled with the replica's existing
+            state and causal metadata.
+          </p>
+        </div>
+
+        <div>
+          <span>04</span>
+          <h3>Propagate</h3>
+          <p>
+            Future gossip exchanges allow newly learned information to
+            continue spreading between replicas.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SHARDING -->
+    <section class="kvs-section">
+
+      <div class="section-label">SHARDING</div>
+
+      <h2 class="section-title">
+        When one replica group<br>
+        <em>isn't enough.</em>
+      </h2>
+
+      <p class="kvs-intro">
+        Sharding partitions the key space so different groups of replicas
+        can be responsible for different subsets of data. Requests can then
+        be routed or proxied to the shard responsible for a particular key.
+      </p>
+
+
+      <!-- SHARD ROUTING VISUAL -->
+      <div class="shard-demo">
+
+        <div class="shard-request">
+
+          <span class="mini-label">INCOMING REQUEST</span>
+
+          <div class="request-pill">
+            <span>GET</span>
+            <code>key = "cat"</code>
+          </div>
+
+        </div>
+
+
+        <div class="shard-arrow">↓</div>
+
+
+        <div class="shard-router">
+
+          <span class="mini-label">ROUTING</span>
+
+          <h3>Which shard owns this key?</h3>
+
+          <p>
+            The node determines the responsible shard and either handles
+            the request locally or forwards it to a node in the correct shard.
+          </p>
+
+        </div>
+
+
+        <div class="shard-arrow">↓</div>
+
+
+        <!-- SHARDS -->
+        <div class="shard-grid">
+
+          <!-- SHARD 0 -->
+          <div class="shard-card">
+
+            <span class="mini-label">SHARD 0</span>
+
+            <div class="shard-nodes">
+              <span>A</span>
+              <span>B</span>
+            </div>
+
+            <p>replicated nodes</p>
+
+          </div>
+
+
+          <!-- SHARD 1 -->
+          <div class="shard-card active-shard">
+
+            <div class="shard-selected">
+              ROUTED HERE
+            </div>
+
+            <span class="mini-label">SHARD 1</span>
+
+            <div class="shard-nodes">
+              <span>C</span>
+              <span>D</span>
+            </div>
+
+            <p>replicated nodes</p>
+
+          </div>
+
+
+          <!-- SHARD 2 -->
+          <div class="shard-card">
+
+            <span class="mini-label">SHARD 2</span>
+
+            <div class="shard-nodes">
+              <span>E</span>
+              <span>F</span>
+            </div>
+
+            <p>replicated nodes</p>
+
+          </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+        <div class="shard-result">
+
+          <span>SHARD 1</span>
+          <span>→</span>
+          <code>"cat" : value</code>
+
+        </div>
+
+      </div>
+
+
+      <!-- WHY SHARD -->
+
+      <div class="shard-concepts">
+
+        <div>
+          <span>01</span>
+
+          <h3>Partition</h3>
+
+          <p>
+            Divide responsibility for the key space between multiple
+            shard groups instead of storing every key everywhere.
+          </p>
+        </div>
+
+
+        <div>
+          <span>02</span>
+
+          <h3>Route</h3>
+
+          <p>
+            Determine which shard owns a key before processing the
+            corresponding operation.
+          </p>
+        </div>
+
+
+        <div>
+          <span>03</span>
+
+          <h3>Proxy</h3>
+
+          <p>
+            If a request reaches the wrong node, it can be forwarded
+            to a replica belonging to the responsible shard.
+          </p>
+        </div>
+
+
+        <div>
+          <span>04</span>
+
+          <h3>Replicate</h3>
+
+          <p>
+            Nodes inside each shard continue exchanging state so the
+            partition itself can contain multiple replicas.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- COMPLEXITY NOTE -->
+
+      <div class="shard-takeaway">
+
+        <span class="mini-label">THE TRADEOFF</span>
+
+        <h3>
+          Distribution solves one problem by creating several new ones.
+        </h3>
+
+        <p>
+          Sharding reduces the amount of data each group is responsible
+          for, but introduces routing, shard membership, synchronization,
+          and consistency concerns across a more complex topology.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- IMPLEMENTATION & LEARNINGS -->
+    <section class="kvs-section">
+
+      <div class="section-label">IMPLEMENTATION</div>
+
+      <h2 class="section-title">
+        From simple endpoints<br>
+        <em>to distributed state.</em>
+      </h2>
+
+      <p class="kvs-intro">
+        Each assignment extended the same core idea with another layer
+        of distributed-systems complexity. The implementation evolved
+        from basic REST operations into replica communication, causal
+        metadata, synchronization, and shard-aware request handling.
+      </p>
+
+
+      <!-- IMPLEMENTATION PROGRESSION -->
+
+      <div class="kvs-implementation">
+
+        <div class="kvs-implementation-row">
+          <span class="implementation-number">01</span>
+
+          <div>
+            <span class="mini-label">REST KVS</span>
+            <h3>Request Handling</h3>
+            <p>
+              Implemented HTTP endpoints for storing, retrieving,
+              updating, and deleting key-value data.
+            </p>
+          </div>
+
+          <div class="implementation-tech">
+            FastAPI
+          </div>
+        </div>
+
+
+        <div class="kvs-implementation-row">
+          <span class="implementation-number">02</span>
+
+          <div>
+            <span class="mini-label">REPLICATION</span>
+            <h3>Replica Communication</h3>
+            <p>
+              Added communication between nodes so updates and state
+              could propagate beyond a single server.
+            </p>
+          </div>
+
+          <div class="implementation-tech">
+            HTTP
+          </div>
+        </div>
+
+
+        <div class="kvs-implementation-row">
+          <span class="implementation-number">03</span>
+
+          <div>
+            <span class="mini-label">CAUSALITY</span>
+            <h3>Vector Clocks</h3>
+            <p>
+              Used logical clocks and causal metadata to compare
+              distributed updates and reason about event ordering.
+            </p>
+          </div>
+
+          <div class="implementation-tech">
+            Metadata
+          </div>
+        </div>
+
+
+        <div class="kvs-implementation-row">
+          <span class="implementation-number">04</span>
+
+          <div>
+            <span class="mini-label">DISTRIBUTION</span>
+            <h3>Gossip & Shard Routing</h3>
+            <p>
+              Worked with replica synchronization, state merging,
+              shard membership, and forwarding requests between nodes.
+            </p>
+          </div>
+
+          <div class="implementation-tech">
+            Distributed
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- WHAT I LEARNED -->
+
+      <div class="kvs-learning">
+
+        <div class="section-label">WHAT I LEARNED</div>
+
+        <h2 class="section-title">
+          Distribution changes<br>
+          <em>everything.</em>
+        </h2>
+
+        <p class="kvs-intro">
+          A key-value store is simple when there is one source of truth.
+          Once multiple independent machines own state, even basic
+          operations introduce questions about ordering, synchronization,
+          failures, and consistency.
+        </p>
+
+
+        <div class="learning-grid">
+
+          <div class="learning-card">
+            <span>01</span>
+
+            <h3>There Is No Global Clock</h3>
+
+            <p>
+              I learned why timestamps alone are not enough to reason
+              about causality and how vector clocks represent relationships
+              between events across independent nodes.
+            </p>
+          </div>
+
+
+          <div class="learning-card">
+            <span>02</span>
+
+            <h3>State Gets Complicated Fast</h3>
+
+            <p>
+              Replication means every node can have a different view of
+              the system at a given moment, making synchronization and
+              metadata part of the core design.
+            </p>
+          </div>
+
+
+          <div class="learning-card">
+            <span>03</span>
+
+            <h3>Scaling Creates Tradeoffs</h3>
+
+            <p>
+              Replication and sharding can distribute work and data, but
+              they also introduce routing, communication, consistency,
+              and failure-handling problems.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FINAL TAKEAWAY -->
+
+      <div class="distributed-takeaway">
+
+        <span class="mini-label">BIGGEST TAKEAWAY</span>
+
+        <blockquote>
+          “The hardest part of distributed systems isn't storing data.
+          It's keeping multiple machines in agreement about what that
+          data means.”
+        </blockquote>
+
+        <p>
+          This project gave me practical experience with the problems
+          behind replication, causality, synchronization, and partitioning,
+          while also showing me how quickly complexity grows as a system
+          becomes distributed.
+        </p>
+
+      </div>
+
+
+      <!-- SOURCE -->
+      <div class="project-source">
+
+        <div>
+          <span class="mini-label">SOURCE CODE</span>
+
+          <h3>Repository coming soon.</h3>
+
+          <p>
+            I'm currently cleaning up and documenting the original
+            coursework repository before publishing it.
+          </p>
+        </div>
+
+        <div class="repo-status">
+          CLEANING UP REPO ···
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
