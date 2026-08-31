@@ -10,8 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
-        rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="../../style.css">
 </head>
@@ -32,13 +33,14 @@
 
   <main>
 
+    <!-- PROJECT HERO -->
     <section class="project-hero">
 
       <a href="../../index.html#projects" class="back-link">← All Projects</a>
 
       <div class="project-status">
         <span class="status-dot"></span>
-        In Progress
+        ✓ Completed · 9 / 9 Labs
       </div>
 
       <h1>
@@ -48,7 +50,7 @@
 
       <p class="hero-desc">
         Learning Linux from userspace all the way down to hardware
-        by building a kernel driver one layer at a time.
+        by building and testing a kernel driver one layer at a time.
       </p>
 
       <div class="project-tech">
@@ -58,294 +60,478 @@
         <span class="tech-tag pill-lavender">MMIO</span>
         <span class="tech-tag pill-peach">Device Drivers</span>
       </div>
+
+      <div class="project-links">
+        <a
+          href="https://github.com/bruhitsyandrea/LinuxKernelDriver"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-link">
+          View Source on GitHub ↗
+        </a>
+      </div>
+
+
       <!-- ARCHITECTURE -->
-    <section class="architecture-section">
+      <section class="architecture-section">
 
-      <div class="section-label">ARCHITECTURE</div>
+        <div class="section-label">ARCHITECTURE</div>
 
-      <h2 class="section-title">
-        From userspace<br>
-        <em>to hardware.</em>
-      </h2>
+        <h2 class="section-title">
+          From userspace<br>
+          <em>to hardware.</em>
+        </h2>
 
-      <p class="architecture-intro">
-        The project gradually connects a userspace application to a
-        virtual PCI device through the Linux kernel.
-      </p>
+        <p class="architecture-intro">
+          The project connects userspace test programs to a virtual PCI
+          device through the Linux kernel, progressing from basic file
+          operations to MMIO, interrupts, DMA, synchronization, and
+          device-state management.
+        </p>
 
-      <div class="architecture-flow">
+        <div class="architecture-flow">
 
-        <div class="arch-layer user-layer">
-          <span class="arch-zone">USER SPACE</span>
-
-          <div class="arch-box">
-            <span class="arch-icon">⌨</span>
-            <h3>Test Program</h3>
-            <p>read · write · ioctl</p>
-          </div>
-        </div>
-
-        <div class="arch-arrow">↓</div>
-
-        <div class="arch-layer kernel-layer">
-          <span class="arch-zone">KERNEL SPACE</span>
-
-          <div class="kernel-flow">
+          <div class="arch-layer user-layer">
+            <span class="arch-zone">USER SPACE</span>
 
             <div class="arch-box">
-              <span class="arch-icon">◫</span>
-              <h3>Character Device</h3>
-              <p>file_operations</p>
+              <span class="arch-icon">⌨</span>
+              <h3>Test Programs</h3>
+              <p>read · write · ioctl · pthreads</p>
             </div>
+          </div>
 
-            <div class="mini-arrow">↓</div>
+          <div class="arch-arrow">↓</div>
+
+          <div class="arch-layer kernel-layer">
+            <span class="arch-zone">KERNEL SPACE</span>
+
+            <div class="kernel-flow">
+
+              <div class="arch-box">
+                <span class="arch-icon">◫</span>
+                <h3>Character Device</h3>
+                <p>file_operations · ioctl</p>
+              </div>
+
+              <div class="mini-arrow">↓</div>
+
+              <div class="arch-box">
+                <span class="arch-icon">⚙</span>
+                <h3>PCI Driver</h3>
+                <p>probe · BAR · MMIO · IRQ · DMA</p>
+              </div>
+
+              <div class="mini-arrow">↓</div>
+
+              <div class="arch-box">
+                <span class="arch-icon">◆</span>
+                <h3>Driver State</h3>
+                <p>mutexes · D0–D3 · synchronization</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="arch-arrow">↓</div>
+
+          <div class="arch-layer hardware-layer">
+            <span class="arch-zone">VIRTUAL HARDWARE</span>
 
             <div class="arch-box">
-              <span class="arch-icon">⚙</span>
-              <h3>PCI Driver</h3>
-              <p>probe · BAR · MMIO</p>
+              <span class="arch-icon">▣</span>
+              <h3>QEMU PCI Device</h3>
+              <p>registers · interrupts · DMA</p>
             </div>
-
           </div>
+
         </div>
 
-        <div class="arch-arrow">↓</div>
+      </section>
 
-        <div class="arch-layer hardware-layer">
-          <span class="arch-zone">VIRTUAL HARDWARE</span>
 
-          <div class="arch-box">
-            <span class="arch-icon">▣</span>
-            <h3>QEMU PCI Device</h3>
-            <p>registers · interrupts</p>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
       <!-- LAB JOURNEY -->
-<section class="lab-section">
+      <section class="lab-section">
 
-  <div class="section-label">THE JOURNEY</div>
+        <div class="section-label">THE JOURNEY</div>
 
-  <h2 class="section-title">
-    Building the driver,<br>
-    <em>one layer at a time.</em>
-  </h2>
+        <h2 class="section-title">
+          Building the driver,<br>
+          <em>one layer at a time.</em>
+        </h2>
 
-  <p class="lab-intro">
-    Each lab adds another layer of Linux kernel development,
-    starting with a simple loadable module and gradually moving
-    toward direct communication with a virtual PCI device.
-  </p>
-
-
-  <!-- LAB 0 -->
-  <details class="lab-card completed">
-    <summary>
-      <div class="lab-number">00</div>
-
-      <div class="lab-heading">
-        <span class="lab-status">✓ COMPLETED</span>
-        <h3>Hello, Kernel</h3>
-        <p>Kernel modules · Makefiles · printk · dmesg</p>
-      </div>
-
-      <span class="lab-toggle">+</span>
-    </summary>
-
-    <div class="lab-content">
-      <h4>What I built</h4>
-      <p>
-        My first loadable Linux kernel module. I built the module
-        against the running kernel, loaded it with insmod, inspected
-        its output through dmesg, and safely unloaded it with rmmod.
-      </p>
-
-      <h4>What I learned</h4>
-      <p>
-        This lab introduced me to the lifecycle of a kernel module
-        and how kernel code is compiled, loaded, executed, and removed
-        separately from normal userspace programs.
-      </p>
-    </div>
-  </details>
-
-
-    <!-- LAB 1 -->
-    <details class="lab-card completed">
-      <summary>
-        <div class="lab-number">01</div>
-
-        <div class="lab-heading">
-          <span class="lab-status">✓ COMPLETED</span>
-          <h3>Character Device Driver</h3>
-          <p>cdev · file_operations · read/write · copy_to_user</p>
-        </div>
-
-        <span class="lab-toggle">+</span>
-      </summary>
-
-      <div class="lab-content">
-        <h4>What I built</h4>
-        <p>
-          A character device backed by an in-kernel buffer with
-          open, release, read, and write operations, plus a userspace
-          C program for testing communication with the driver.
+        <p class="lab-intro">
+          Each lab adds another layer of Linux kernel development,
+          starting with a simple loadable module and progressing toward
+          hardware communication, asynchronous events, bulk transfers,
+          synchronization, and sustained reliability testing.
         </p>
 
-        <h4>What I learned</h4>
-        <p>
-          I learned how the Linux VFS connects userspace operations
-          to driver functions through struct file_operations and why
-          data crossing the userspace/kernel boundary must use
-          copy_to_user() and copy_from_user().
-        </p>
-      </div>
-    </details>
+
+        <!-- LAB 0 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">00</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Hello, Kernel</h3>
+              <p>Kernel modules · Makefiles · printk · dmesg</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              My first loadable Linux kernel module. I built the module
+              against the running kernel, loaded it with insmod, inspected
+              its output through dmesg, and safely unloaded it with rmmod.
+            </p>
+
+            <h4>What I learned</h4>
+            <p>
+              This lab introduced me to the lifecycle of a kernel module
+              and how kernel code is compiled, loaded, executed, and removed
+              separately from normal userspace programs.
+            </p>
+          </div>
+        </details>
 
 
-    <!-- LAB 2 -->
-    <details class="lab-card completed">
-      <summary>
-        <div class="lab-number">02</div>
+        <!-- LAB 1 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">01</div>
 
-        <div class="lab-heading">
-          <span class="lab-status">✓ COMPLETED</span>
-          <h3>IOCTL Control Interface</h3>
-          <p>ioctl · _IO · _IOR · _IOW · device commands</p>
-        </div>
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Character Device Driver</h3>
+              <p>cdev · file_operations · read/write · copy_to_user</p>
+            </div>
 
-        <span class="lab-toggle">+</span>
-      </summary>
+            <span class="lab-toggle">+</span>
+          </summary>
 
-      <div class="lab-content">
-        <h4>What I built</h4>
-        <p>
-          Extended the character driver with an ioctl interface for
-          device-specific commands such as resetting the device,
-          querying its status, and changing its operating mode.
-        </p>
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              A character device backed by an in-kernel buffer with
+              open, release, read, and write operations, plus a userspace
+              C program for testing communication with the driver.
+            </p>
 
-        <h4>What I learned</h4>
-        <p>
-          I learned why read and write are not enough for many real
-          devices and how ioctl provides a structured control interface
-          between userspace applications and kernel drivers.
-        </p>
-      </div>
-    </details>
-
-
-    <!-- LAB 3 -->
-    <details class="lab-card completed">
-      <summary>
-        <div class="lab-number">03</div>
-
-        <div class="lab-heading">
-          <span class="lab-status">✓ COMPLETED</span>
-          <h3>PCI & MMIO</h3>
-          <p>probe() · BAR · pci_iomap() · readl() · writel()</p>
-        </div>
-
-        <span class="lab-toggle">+</span>
-      </summary>
-
-      <div class="lab-content">
-        <h4>What I built</h4>
-        <p>
-          A PCI driver that binds to a virtual QEMU device, maps its
-          Base Address Register into kernel address space, and performs
-          register-level reads and writes through MMIO.
-        </p>
-
-        <h4>What I learned</h4>
-        <p>
-          This was where the project moved from a software-only character
-          device into actual hardware-style driver development. I learned
-          how the PCI subsystem discovers devices, calls probe(), maps
-          device registers, and allows the driver to communicate with
-          hardware through memory-mapped I/O.
-        </p>
-      </div>
-    </details>
+            <h4>What I learned</h4>
+            <p>
+              I learned how the Linux VFS connects userspace operations
+              to driver functions through struct file_operations and why
+              data crossing the userspace/kernel boundary must use
+              copy_to_user() and copy_from_user().
+            </p>
+          </div>
+        </details>
 
 
-    <!-- LAB 4 -->
-    <details class="lab-card current" open>
-      <summary>
-        <div class="lab-number">04</div>
+        <!-- LAB 2 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">02</div>
 
-        <div class="lab-heading">
-          <span class="lab-status">● CURRENTLY HERE</span>
-          <h3>Interrupt Handling</h3>
-          <p>IRQ · ISR · request_irq() · deferred work</p>
-        </div>
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>IOCTL Control Interface</h3>
+              <p>ioctl · _IO · _IOR · _IOW · device commands</p>
+            </div>
 
-        <span class="lab-toggle">+</span>
-      </summary>
+            <span class="lab-toggle">+</span>
+          </summary>
 
-      <div class="lab-content">
-        <h4>What I'm building</h4>
-        <p>
-          I'm currently adding interrupt-driven behavior so the driver
-          can respond to device events without continuously polling
-          the hardware.
-        </p>
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Extended the character driver with an ioctl interface for
+              device-specific commands such as resetting the device,
+              querying its status, and changing its operating mode.
+            </p>
 
-        <h4>What I'm learning</h4>
-        <p>
-          I'm learning how interrupt service routines interact with the
-          CPU and why an ISR should perform only the minimum necessary
-          work before deferring heavier processing to a bottom half.
-        </p>
-      </div>
-    </details>
-    <!-- UPCOMING LABS -->
-  <div class="upcoming-section">
+            <h4>What I learned</h4>
+            <p>
+              I learned why read and write are not enough for many real
+              devices and how ioctl provides a structured control interface
+              between userspace applications and kernel drivers.
+            </p>
+          </div>
+        </details>
 
-    <div class="upcoming-label">UPCOMING</div>
 
-    <div class="upcoming-lab">
-      <span class="upcoming-number">05</span>
-      <div>
-        <h3>DMA Simulation</h3>
-        <p>DMA-coherent buffers · bulk transfers · performance comparison</p>
-      </div>
-    </div>
+        <!-- LAB 3 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">03</div>
 
-    <div class="upcoming-lab">
-      <span class="upcoming-number">06</span>
-      <div>
-        <h3>Power Management</h3>
-        <p>D0–D3 states · mutexes · state transitions</p>
-      </div>
-    </div>
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>PCI & MMIO</h3>
+              <p>probe() · BAR · pci_iomap() · readl() · writel()</p>
+            </div>
 
-    <div class="upcoming-lab">
-      <span class="upcoming-number">07</span>
-      <div>
-        <h3>Stress Testing & Polish</h3>
-        <p>concurrency · multithreaded testing · resource safety</p>
-      </div>
-    </div>
+            <span class="lab-toggle">+</span>
+          </summary>
 
-    <div class="upcoming-lab">
-      <span class="upcoming-number">08</span>
-      <div>
-        <h3>Documentation</h3>
-        <p>architecture · benchmarks · reproducibility</p>
-      </div>
-    </div>
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              A PCI driver that binds to a virtual QEMU device, maps its
+              Base Address Register into kernel address space, and performs
+              register-level reads and writes through MMIO.
+            </p>
 
-  </div>
+            <h4>What I learned</h4>
+            <p>
+              This was where the project moved from a software-only character
+              device into hardware-style driver development. I learned how
+              the PCI subsystem discovers devices, invokes probe(), maps
+              device registers, and allows a driver to communicate with
+              hardware through memory-mapped I/O.
+            </p>
+          </div>
+        </details>
 
-  </section>
+
+        <!-- LAB 4 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">04</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Interrupt Handling</h3>
+              <p>IRQ · ISR · request_irq() · tasklets · deferred work</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Added interrupt-driven behavior to the PCI driver using
+              request_irq(), with a top-half interrupt handler that
+              acknowledges device events and defers additional processing
+              to a tasklet bottom half.
+            </p>
+
+            <h4>What I validated</h4>
+            <p>
+              Verified the interrupt path with a 20-trigger rapid-fire
+              stress test with zero dropped events.
+            </p>
+
+            <h4>What I learned</h4>
+            <p>
+              I learned why expensive processing should not happen in
+              hard-IRQ context and how the top-half/bottom-half model lets
+              a driver acknowledge hardware quickly while safely deferring
+              additional work.
+            </p>
+          </div>
+        </details>
+
+
+        <!-- LAB 5 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">05</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>DMA & Bulk Transfers</h3>
+              <p>dma_alloc_coherent() · DMA buffers · benchmarking · MMIO</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Allocated a 1 MB DMA-coherent buffer with
+              dma_alloc_coherent(), verified bulk-transfer contents
+              byte-for-byte, and benchmarked the simulated bulk-transfer
+              path against a naive per-word MMIO readl() loop.
+            </p>
+
+            <h4>What I measured</h4>
+            <p>
+              The simulated bulk path completed in approximately 19 μs,
+              compared with more than 300 ms for the intentionally naive
+              MMIO baseline.
+            </p>
+
+            <h4>Engineering constraint</h4>
+            <p>
+              Native EDU DMA could not be exercised on the QEMU ARM virt
+              platform because of the device's 28-bit DMA addressing
+              constraint. I documented the limitation and used a coherent
+              buffer simulation to exercise the Linux DMA allocation API
+              without presenting the result as hardware DMA performance.
+            </p>
+
+            <h4>What I learned</h4>
+            <p>
+              I learned how Linux provides DMA-safe memory, why DMA
+              addressing capabilities depend on both the device and
+              platform, and how bulk-transfer designs reduce the overhead
+              associated with repeated register-level I/O.
+            </p>
+          </div>
+        </details>
+
+
+        <!-- LAB 6 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">06</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Power Management & Synchronization</h3>
+              <p>D0–D3 · mutexes · ioctl · state machines · concurrency</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Implemented a D0–D3 power-state machine with a transition
+              table that permits only valid adjacent state changes. The
+              interface is exposed to userspace through the /dev/edu_pm
+              misc device and ioctl commands.
+            </p>
+
+            <h4>How I synchronized it</h4>
+            <p>
+              Protected shared power-state transitions with a kernel mutex
+              so concurrent userspace requests cannot modify the state
+              machine simultaneously.
+            </p>
+
+            <h4>What I validated</h4>
+            <p>
+              Verified that invalid transitions such as D0 → D3 are
+              rejected and stress-tested the state machine with four
+              concurrent threads performing 200 total operations without
+              corrupted device state.
+            </p>
+
+            <h4>What I learned</h4>
+            <p>
+              I learned how kernel drivers protect shared state under
+              concurrency, when mutex-based synchronization is appropriate,
+              and how explicit state machines enforce safe transitions
+              across userspace requests.
+            </p>
+          </div>
+        </details>
+
+
+        <!-- LAB 7 -->
+        <details class="lab-card completed">
+          <summary>
+            <div class="lab-number">07</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Stress Testing & Reliability</h3>
+              <p>pthreads · concurrency · sustained load · resource safety</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Built a multithreaded stress harness that continuously
+              exercised read, write, and ioctl operations across four
+              concurrent threads during a sustained 10-minute test.
+            </p>
+
+            <h4>What I validated</h4>
+            <p>
+              The driver completed more than 932 million operations with
+              zero kernel warnings or oopses, then unloaded cleanly with
+              no orphaned resources.
+            </p>
+
+            <h4>What I found</h4>
+            <p>
+              The stress test confirmed kernel-level stability while also
+              exposing a remaining limitation: the internal character-device
+              buffer is not fully synchronized for cross-thread read
+              consistency.
+            </p>
+
+            <h4>What I learned</h4>
+            <p>
+              I learned how sustained concurrent testing can expose driver
+              correctness and lifecycle issues that sequential tests may
+              miss, and how to distinguish kernel stability from
+              application-level data consistency under concurrent access.
+            </p>
+          </div>
+        </details>
+
+
+        <!-- LAB 8 -->
+        <details class="lab-card completed" open>
+          <summary>
+            <div class="lab-number">08</div>
+
+            <div class="lab-heading">
+              <span class="lab-status">✓ COMPLETED</span>
+              <h3>Documentation & Final Polish</h3>
+              <p>architecture · benchmarks · reproducibility · README</p>
+            </div>
+
+            <span class="lab-toggle">+</span>
+          </summary>
+
+          <div class="lab-content">
+            <h4>What I built</h4>
+            <p>
+              Completed the project documentation with setup and build
+              instructions, architecture details, testing procedures,
+              benchmark results, and documented platform limitations.
+            </p>
+
+            <h4>What I documented</h4>
+            <p>
+              Consolidated the full driver progression from character-device
+              operations through PCI/MMIO, interrupts, DMA, power management,
+              synchronization, and sustained stress testing into a reproducible
+              project README.
+            </p>
+
+            <h4>Final result</h4>
+            <p>
+              Finished all nine project stages and validated the final driver
+              under a 10-minute concurrent stress test exceeding 932 million
+              operations with zero kernel warnings or oopses and a clean
+              driver unload.
+            </p>
+          </div>
+        </details>
+
+      </section>
 
     </section>
 
   </main>
 
 </body>
+
 </html>
